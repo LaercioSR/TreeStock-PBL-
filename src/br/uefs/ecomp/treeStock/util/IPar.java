@@ -1,9 +1,8 @@
 package br.uefs.ecomp.treeStock.util;
 
 /**
- * Inteface que representa pares <chave, valor>. O método iterator() de IPares
+ * Inteface que representa pares (chave, valor). O método iterator() de IPares
  * deve retornar um iterador de pares do tipo IPar.
- * <br>
  * @see br.uefs.ecomp.treeStock.util.IPares
  * @author Robos
  */

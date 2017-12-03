@@ -150,9 +150,11 @@ public class TreeStockFacade {
      * Retorna os k melhores clientes em ordem descrescente de valor da
      * carteira.
      *
-     * @param k os k melhores clientes
-     * @return os k melhores clientes em ordem descrescente de valor da
+     * @param k Os k melhores clientes
+     * @return Iterator - Iterador dos k melhores clientes em ordem descrescente de valor da
      * carteira.
+     * @throws ClienteNaoEncontradoException Se não existir clientes cadastrados
+     * @throws NumeroClientesInsuficienteException Se o número K passado for menor que o número de clientes cadastrados
      */
     public Iterator melhoresClientes(int k) throws ClienteNaoEncontradoException, NumeroClientesInsuficienteException {
         return controller.melhoresClientes(k);

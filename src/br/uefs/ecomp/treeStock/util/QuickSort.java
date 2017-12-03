@@ -1,4 +1,4 @@
-package br.uefs.ecomp.TreeStock.util;
+package br.uefs.ecomp.treeStock.util;
 
 //Adaptado da Ordenação QuickSort do livro de Estrutura de dados de Lafore
 

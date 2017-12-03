@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Cliente implements Serializable, Comparable {
     private String nome;
     private String endereco;
-    private String cpf;
+    private final String cpf;
     private Carteira carteira;
 
     public Cliente(String nome, String cpf, String endereco) {
