@@ -2,17 +2,25 @@ package br.uefs.ecomp.treeStock.controller;
 
 import br.uefs.ecomp.treeStock.model.Cliente;
 import br.uefs.ecomp.treeStock.model.TipoAcao;
-import br.uefs.ecomp.treeStock.util.DadoDuplicadoException;
-import br.uefs.ecomp.treeStock.util.DadoNaoEncontradoException;
+import br.uefs.ecomp.treeStock.exceptions.AcaoNaoEncontradaException;
+import br.uefs.ecomp.treeStock.exceptions.ClienteNaoEncontradoException;
+import br.uefs.ecomp.treeStock.exceptions.DadoDuplicadoException;
+import br.uefs.ecomp.treeStock.exceptions.DadoNaoEncontradoException;
+import br.uefs.ecomp.treeStock.exceptions.NumeroClientesInsuficienteException;
+import br.uefs.ecomp.treeStock.model.Carteira;
 import java.io.File;
-//java.io.PrintStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Iterator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.Assert;
 
 public class TreeStockControllerTest {
     
+    private static final double EPSILON = 0.001;
     private TreeStockController controller;
     
     @Before
@@ -85,8 +93,158 @@ public class TreeStockControllerTest {
     }
     
     @Test
-    public void testAtualizarCotacoes() throws FileNotFoundException{
-        //Scanner arq = new Scanner(new File("CotacosTest.txt"));
-        //PrintStream arquivo = PrintStream("Cotacoes.txt");
+    public void testAtualizarCotacoes() throws DadoDuplicadoException, FileNotFoundException {
+        controller.cadastrarAcao("VR14", "vr14.com.br", 21.05, TipoAcao.ON);
+        Assert.assertEquals(21.05, controller.getValorAcao("VR14"), EPSILON);
+        controller.atualizarCotacoes("ArquivosTesteCotacoes/CotacoesHistoricas.txt");
+        Assert.assertEquals(32.81, controller.getValorAcao("VR14"), EPSILON);
+    }
+    
+    @Test
+    public void testIncluirAcaoEmCarteira() throws DadoDuplicadoException, DadoNaoEncontradoException, AcaoNaoEncontradaException{
+        controller.cadastrarCliente("João da Silva", "55555555555", "Feira de Santana-BA");
+        controller.cadastrarAcao("VR14", "vr14.com.br", 21.05, TipoAcao.ON);
+        Assert.assertEquals( 0, controller.getQuantidadeAcaoCliente("55555555555", "VR14"));
+        controller.incluirAcaoCliente("55555555555", "VR14", 10);
+        Assert.assertEquals(10, controller.getQuantidadeAcaoCliente("55555555555", "VR14"));
+    }
+    
+    @Test (expected = AcaoNaoEncontradaException.class)
+    public void testIncluirAcaoNaoExistenteEmCarteira() throws DadoDuplicadoException, DadoNaoEncontradoException, AcaoNaoEncontradaException{
+        controller.cadastrarCliente("João da Silva", "55555555555", "Feira de Santana-BA");
+        controller.incluirAcaoCliente("55555555555", "VR14", 10);
+    }
+    
+    @Test (expected = DadoNaoEncontradoException.class)
+    public void testIncluirAcaoEmCarteiraInexistente() throws DadoDuplicadoException, DadoNaoEncontradoException, AcaoNaoEncontradaException{
+        controller.cadastrarAcao("VR14", "vr14.com.br", 21.05, TipoAcao.ON);
+        controller.incluirAcaoCliente("55555555555", "VR14", 10);
+    }
+    
+    @Test
+    public void testRemoverAcaoEmCarteira() throws DadoDuplicadoException, DadoNaoEncontradoException, AcaoNaoEncontradaException{
+        controller.cadastrarCliente("João da Silva", "55555555555", "Feira de Santana-BA");
+        controller.cadastrarAcao("VR14", "vr14.com.br", 21.05, TipoAcao.ON);
+        controller.incluirAcaoCliente("55555555555", "VR14", 10);
+        Assert.assertEquals(10, controller.getQuantidadeAcaoCliente("55555555555", "VR14"));
+        controller.removerAcaoCliente("55555555555", "VR14");
+        Assert.assertEquals( 0, controller.getQuantidadeAcaoCliente("55555555555", "VR14"));
+    }
+    
+    @Test (expected = AcaoNaoEncontradaException.class)
+    public void testRemoverAcaoNaoExistenteEmCarteira() throws DadoDuplicadoException, DadoNaoEncontradoException, AcaoNaoEncontradaException{
+        controller.cadastrarCliente("João da Silva", "55555555555", "Feira de Santana-BA");
+        controller.removerAcaoCliente("55555555555", "VR14");
+    }
+    
+    @Test (expected = DadoNaoEncontradoException.class)
+    public void testRemoverAcaoEmCarteiraInexistente() throws DadoDuplicadoException, DadoNaoEncontradoException, AcaoNaoEncontradaException{
+        controller.cadastrarAcao("VR14", "vr14.com.br", 21.05, TipoAcao.ON);
+        controller.removerAcaoCliente("55555555555", "VR14");
+    }
+    
+    @Test
+    public void testAlterarAcaoEmCarteira() throws DadoDuplicadoException, DadoNaoEncontradoException, AcaoNaoEncontradaException, ClienteNaoEncontradoException{
+        controller.cadastrarCliente("João da Silva", "55555555555", "Feira de Santana-BA");
+        controller.cadastrarAcao("VR14", "vr14.com.br", 21.05, TipoAcao.ON);
+        controller.incluirAcaoCliente("55555555555", "VR14", 10);
+        Assert.assertEquals(10, controller.getQuantidadeAcaoCliente("55555555555", "VR14"));
+        controller.setQuantidadeAcaoCliente("55555555555", "VR14", 20);
+        Assert.assertEquals( 20, controller.getQuantidadeAcaoCliente("55555555555", "VR14"));
+    }
+    
+    
+    @Test (expected = AcaoNaoEncontradaException.class)
+    public void testAlterarAcaoNaoExistenteNaCarteira() throws DadoDuplicadoException, DadoNaoEncontradoException, AcaoNaoEncontradaException, ClienteNaoEncontradoException{
+        controller.cadastrarCliente("João da Silva", "55555555555", "Feira de Santana-BA");
+        controller.setQuantidadeAcaoCliente("55555555555", "VR14", 20);
+    }
+    
+    @Test (expected = ClienteNaoEncontradoException.class)
+    public void testAlterarAcaoEmCarteiraInexistente() throws DadoDuplicadoException, DadoNaoEncontradoException, AcaoNaoEncontradaException, ClienteNaoEncontradoException{
+        controller.cadastrarAcao("VR14", "vr14.com.br", 21.05, TipoAcao.ON);
+        controller.setQuantidadeAcaoCliente("55555555555", "VR14", 20);
+    }
+    
+    @Test (expected = DadoNaoEncontradoException.class)
+    public void testAlterarAcaoNaoEncontradaNaCarteira() throws DadoDuplicadoException, DadoNaoEncontradoException, AcaoNaoEncontradaException, ClienteNaoEncontradoException{
+        controller.cadastrarCliente("João da Silva", "55555555555", "Feira de Santana-BA");
+        controller.cadastrarAcao("VR14", "vr14.com.br", 21.05, TipoAcao.ON);
+        controller.setQuantidadeAcaoCliente("55555555555", "VR14", 20);
+    }
+    
+    @Test
+    public void testNomeArquivoSistema() throws IOException{
+        Date dataAtual = new Date();
+        SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yy HH.mm");
+        controller.gerarArquivoSistema();
+        String nomeArq = "systemSave (" + formato.format(dataAtual) + ").data";
+        Assert.assertEquals(nomeArq, controller.nomeArquivoSistema());
+        File arq = new File("Saves/", nomeArq);
+        arq.delete();
+    }
+    
+    @Test
+    public void testIteratorClientes() throws DadoDuplicadoException{
+        controller.cadastrarCliente("João da Nica", "55555555555", "Sabe onde eu tô?");
+        controller.cadastrarCliente("Zé Ninguém", "33333333333", "Pintadas-BA");
+        controller.cadastrarCliente("Irineu, você não, nem eu", "88888888888", "Vitória-ES");
+        controller.cadastrarCliente("Rolezera", "77777777777", "Parque Ibiapoera, São Paulo-SP");
+        controller.cadastrarCliente("Galo Cego", "11111111111", "Maringá-PR");
+        Iterator it = controller.iterator();
+        Assert.assertEquals("Galo Cego", ((Cliente) it.next()).getNome());
+        Assert.assertEquals("Zé Ninguém", ((Cliente) it.next()).getNome());
+        Assert.assertEquals("João da Nica", ((Cliente) it.next()).getNome());
+        Assert.assertEquals("Rolezera", ((Cliente) it.next()).getNome());
+        Assert.assertEquals("Irineu, você não, nem eu", ((Cliente) it.next()).getNome());
+    }
+    
+    @Test (expected = ClienteNaoEncontradoException.class)
+    public void testMelhoresClientesSemClientesCadastrados() throws ClienteNaoEncontradoException, NumeroClientesInsuficienteException{
+        controller.melhoresClientes(10);
+    }
+    
+    @Test (expected = NumeroClientesInsuficienteException.class)
+    public void testMelhoresClientesNumeroClientesInsuficiente() throws ClienteNaoEncontradoException, DadoDuplicadoException, NumeroClientesInsuficienteException{
+        controller.cadastrarCliente("João da Nica", "55555555555", "Sabe onde eu tô?");
+        controller.cadastrarCliente("Zé Ninguém", "33333333333", "Pintadas-BA");
+        controller.cadastrarCliente("Irineu, você não, nem eu", "88888888888", "Vitória-ES");
+        controller.melhoresClientes(10);
+    }
+    
+    @Test 
+    public void testMelhoresClientes() throws ClienteNaoEncontradoException, DadoDuplicadoException, NumeroClientesInsuficienteException, AcaoNaoEncontradaException, DadoNaoEncontradoException{
+        controller.cadastrarCliente("João da Nica", "55555555555", "Sabe onde eu tô?");
+        controller.cadastrarCliente("Zé Ninguém", "33333333333", "Pintadas-BA");
+        controller.cadastrarCliente("Irineu, você não, nem eu", "88888888888", "Vitória-ES");
+        controller.cadastrarCliente("Rolezera", "77777777777", "Parque Ibiapoera, São Paulo-SP");
+        controller.cadastrarCliente("Galo Cego", "11111111111", "Maringá-PR");
+        controller.cadastrarAcao("FACE", "facebook", 11.50, TipoAcao.ON);
+        controller.cadastrarAcao("VR14", "vr14.com.br", 21.05, TipoAcao.ON);
+        controller.incluirAcaoCliente("55555555555", "VR14", 10);
+        controller.incluirAcaoCliente("55555555555", "FACE", 5);
+        controller.incluirAcaoCliente("33333333333", "VR14", 9);
+        controller.incluirAcaoCliente("33333333333", "FACE", 11);
+        controller.incluirAcaoCliente("88888888888", "VR14", 15);
+        controller.incluirAcaoCliente("88888888888", "FACE", 25);
+        controller.incluirAcaoCliente("77777777777", "VR14", 25);
+        controller.incluirAcaoCliente("11111111111", "VR14", 5);
+        Iterator it = controller.melhoresClientes(5);
+        Assert.assertEquals("Irineu, você não, nem eu", ((Carteira) it.next()).getNomeDonoConta());
+        Assert.assertEquals("Rolezera", ((Carteira) it.next()).getNomeDonoConta());
+        Assert.assertEquals("Zé Ninguém", ((Carteira) it.next()).getNomeDonoConta());
+        Assert.assertEquals("João da Nica", ((Carteira) it.next()).getNomeDonoConta());
+        Assert.assertEquals("Galo Cego", ((Carteira) it.next()).getNomeDonoConta());
+    }
+    
+    @Test
+    public void testSaldoCliente() throws DadoDuplicadoException, DadoNaoEncontradoException, AcaoNaoEncontradaException, ClienteNaoEncontradoException, FileNotFoundException{
+        controller.cadastrarCliente("João da Silva", "55555555555", "Feira de Santana-BA");
+        controller.cadastrarAcao("FACE", "facebook", 11.50, TipoAcao.PN);
+        controller.incluirAcaoCliente("55555555555", "FACE", 5);
+        Assert.assertEquals(11.50 * 5 * 100, controller.getValorCarteiraCliente("55555555555"), EPSILON);
+        controller.atualizarCotacoes("ArquivosTesteCotacoes/CotacoesHistoricas.txt");
+        Assert.assertEquals(1 * 5 * 100, controller.getCarteiraCliente("55555555555").getSaldo(), EPSILON);
+        Assert.assertEquals((30.56 * 5 * 100) + (1 * 5 * 100), controller.getValorCarteiraCliente("55555555555"), EPSILON);
     }
 }

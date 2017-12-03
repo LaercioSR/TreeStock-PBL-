@@ -1,16 +1,17 @@
 package br.uefs.ecomp.treeStock.controller;
 
+import br.uefs.ecomp.treeStock.exceptions.NumeroClientesInsuficienteException;
 import br.uefs.ecomp.TreeStock.util.QuickSort;
 import br.uefs.ecomp.treeStock.model.Acao;
 import br.uefs.ecomp.treeStock.model.Carteira;
 import br.uefs.ecomp.treeStock.model.Cliente;
 import br.uefs.ecomp.treeStock.model.Lote;
 import br.uefs.ecomp.treeStock.model.TipoAcao;
-import br.uefs.ecomp.treeStock.model.exception.AcaoNaoEncontradaException;
-import br.uefs.ecomp.treeStock.model.exception.ClienteNaoEncontradoException;
+import br.uefs.ecomp.treeStock.exceptions.AcaoNaoEncontradaException;
+import br.uefs.ecomp.treeStock.exceptions.ClienteNaoEncontradoException;
 import br.uefs.ecomp.treeStock.util.Arvore;
-import br.uefs.ecomp.treeStock.util.DadoDuplicadoException;
-import br.uefs.ecomp.treeStock.util.DadoNaoEncontradoException;
+import br.uefs.ecomp.treeStock.exceptions.DadoDuplicadoException;
+import br.uefs.ecomp.treeStock.exceptions.DadoNaoEncontradoException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -178,7 +179,7 @@ public class TreeStockController implements Serializable {
             }
             
             //verifica se a ação é do tipo Preferencial, para que as carteiras sejam atualizadas
-            if(acao != null && acao.getTipoAcao() == TipoAcao.PN){
+            if(acao != null && acao.equals(acaoComp) && tipoAcao.equals("PN")){
                 for (Carteira carteira : contas) {
                     Iterator itLotes = carteira.iteratorLotes();
                     
@@ -283,27 +284,7 @@ public class TreeStockController implements Serializable {
         carteira.removerLote(lote);
     }
 
-    public void alterarAcaoCliente(String cpf, String siglaAcao, int quantidade) throws DadoNaoEncontradoException, AcaoNaoEncontradaException {
-        Cliente clienteCmp = new Cliente(null, cpf, null);
-        Cliente cliente = (Cliente) clientes.buscar(clienteCmp);
-        Carteira carteira = cliente.getCarteira();
-        Acao acaoCmp = new Acao(siglaAcao);
-        Lote lote = null;
-        Iterator it = carteira.iteratorLotes();
-        
-        while(it.hasNext()){
-            lote = (Lote) it.next();
-            if(lote.getAcao().equals(acaoCmp))
-                break;
-        }
-        
-        if(lote == null || !lote.getAcao().equals(acaoCmp))
-            throw new AcaoNaoEncontradaException("\n    Alteração de ações mal sucedida, \n    Lote não encontrado");
-        
-        lote.setQuantidadeLotes(quantidade);
-    }
-
-    public int getQuantidadeAcaoCliente(String cpf, String siglaAcao) throws DadoNaoEncontradoException, AcaoNaoEncontradaException {
+    public int getQuantidadeAcaoCliente(String cpf, String siglaAcao) throws DadoNaoEncontradoException {
         Cliente clienteCmp = new Cliente(null, cpf, null);
         Cliente cliente;
         Acao acaoCmp = new Acao(siglaAcao);
@@ -320,10 +301,10 @@ public class TreeStockController implements Serializable {
             }
         }
         
-        if(lote != null && lote.getAcao().equals(acaoCmp)){
-            return lote.getQuantidadeLotes();
+        if(lote == null || !lote.getAcao().equals(acaoCmp)){
+            return 0;
         } else{
-            throw new AcaoNaoEncontradaException();
+            return lote.getQuantidadeLotes();
         }
     }
 
@@ -381,15 +362,25 @@ public class TreeStockController implements Serializable {
         }
     }
 
-    public double getValorCarteiraCliente(String cpfCliente) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public double getValorCarteiraCliente(String cpfCliente) throws ClienteNaoEncontradoException {
+        Cliente clienteCmp = new Cliente(null, cpfCliente, null);
+        Cliente cliente;
+        
+        try {
+            cliente = (Cliente) clientes.buscar(clienteCmp);
+            return cliente.getCarteira().atualizarMontante();
+        } catch (DadoNaoEncontradoException e) {
+            throw new ClienteNaoEncontradoException();
+        }
     }
 
-    public Iterator melhoresClientes(int k) throws ClienteNaoEncontradoException {
+    public Iterator melhoresClientes(int k) throws ClienteNaoEncontradoException, NumeroClientesInsuficienteException {
         Iterator it = contas.iterator();
         
         if(contas.isEmpty())
             throw new ClienteNaoEncontradoException();
+        else if(contas.size() < k)
+            throw new NumeroClientesInsuficienteException();
         
         while(it.hasNext()){
             Carteira carteira = (Carteira) it.next();

@@ -1,5 +1,7 @@
 package br.uefs.ecomp.treeStock.util;
 
+import br.uefs.ecomp.treeStock.exceptions.DadoDuplicadoException;
+import br.uefs.ecomp.treeStock.exceptions.DadoNaoEncontradoException;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Stack;
@@ -7,6 +9,7 @@ import java.util.Stack;
 //Classe Arvore e seus métodos foram adaptados dos encontrados no livro "Estrutura de Dados..." de Lafore
 public class Arvore implements IArvore, Serializable{
     private Node raiz;
+    private int size = 0;
     
     private class Node implements Serializable{
         private Comparable data;
@@ -41,6 +44,10 @@ public class Arvore implements IArvore, Serializable{
 
     public boolean isEmpty(){
         return raiz == null;
+    }
+    
+    public int size(){
+        return size;
     }
     
     @Override
@@ -81,12 +88,14 @@ public class Arvore implements IArvore, Serializable{
                     atual = atual.getFilhoEsquerda();
                     if(atual == null){
                         pai.setFilhoEsquerda(novo);
+                        size++;
                         return;
                     }
                 }else if(item.compareTo(atual.getData()) > 0){
                     atual = atual.getFilhoDireita();
                     if(atual == null){
                         pai.setFilhoDireita(novo);
+                        size++;
                         return;
                     }
                 }else{    //Condição só ocorrerá caso seja encontrado um elemento com dado igual ao novo elemento
@@ -163,6 +172,7 @@ public class Arvore implements IArvore, Serializable{
             sucessor.setFilhoEsquerda(atual.getFilhoEsquerda());
         }
         
+        size--;
         return atual.getData();
     }
     

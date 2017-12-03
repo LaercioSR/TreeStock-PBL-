@@ -4,9 +4,9 @@ import br.uefs.ecomp.treeStock.facade.TreeStockFacade;
 import br.uefs.ecomp.treeStock.model.Acao;
 import br.uefs.ecomp.treeStock.model.Cliente;
 import br.uefs.ecomp.treeStock.model.TipoAcao;
-import br.uefs.ecomp.treeStock.model.exception.AcaoNaoEncontradaException;
-import br.uefs.ecomp.treeStock.model.exception.ClienteNaoEncontradoException;
-import br.uefs.ecomp.treeStock.util.DadoDuplicadoException;
+import br.uefs.ecomp.treeStock.exceptions.AcaoNaoEncontradaException;
+import br.uefs.ecomp.treeStock.exceptions.ClienteNaoEncontradoException;
+import br.uefs.ecomp.treeStock.exceptions.DadoDuplicadoException;
 
 public class Teste {
     

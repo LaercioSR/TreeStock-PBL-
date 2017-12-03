@@ -15,8 +15,16 @@ public class Carteira implements Serializable, Comparable {
         this.donoConta = donoConta;
     }
 
+    public String getNomeDonoConta() {
+        return donoConta.getNome();
+    }
+
     public void setSaldo(double saldo) {
         this.saldo += saldo;
+    }
+
+    public double getSaldo() {
+        return saldo;
     }
     
     public void criarLote(Acao acao, int quantidadeLotes){
@@ -35,7 +43,6 @@ public class Carteira implements Serializable, Comparable {
         while(it.hasNext()){
             Lote lote = (Lote) it.next();
             
-            //System.out.print(lote.getQuantidadeLotes() * lote.getAcao().getValor() * 100 + " + ");
             valorAcoes += lote.getAcao().getValor() * lote.getQuantidadeLotes() * 100;
         }
         //System.out.println();

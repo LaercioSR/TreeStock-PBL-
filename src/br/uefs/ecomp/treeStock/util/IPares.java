@@ -1,5 +1,7 @@
 package br.uefs.ecomp.treeStock.util;
 
+import br.uefs.ecomp.treeStock.exceptions.DadoNaoEncontradoException;
+
 /**
  * Armazena um conjunto de pares (chave, valor). Para cada chave, existe apenas
  * um valor correspondente.

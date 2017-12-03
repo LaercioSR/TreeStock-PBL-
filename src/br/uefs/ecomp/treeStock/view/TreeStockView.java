@@ -6,9 +6,10 @@ import br.uefs.ecomp.treeStock.model.Carteira;
 import br.uefs.ecomp.treeStock.model.Cliente;
 import br.uefs.ecomp.treeStock.model.Lote;
 import br.uefs.ecomp.treeStock.model.TipoAcao;
-import br.uefs.ecomp.treeStock.model.exception.AcaoNaoEncontradaException;
-import br.uefs.ecomp.treeStock.model.exception.ClienteNaoEncontradoException;
-import br.uefs.ecomp.treeStock.util.DadoDuplicadoException;
+import br.uefs.ecomp.treeStock.exceptions.AcaoNaoEncontradaException;
+import br.uefs.ecomp.treeStock.exceptions.ClienteNaoEncontradoException;
+import br.uefs.ecomp.treeStock.exceptions.DadoDuplicadoException;
+import br.uefs.ecomp.treeStock.exceptions.NumeroClientesInsuficienteException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
@@ -195,7 +196,7 @@ public class TreeStockView {
         novaQuantidade = in.nextInt();
         
         try{
-            facade.alterarAcaoCliente(cpf, siglaAcao, novaQuantidade);
+            facade.setQuantidadeAcaoCliente(cpf, siglaAcao, novaQuantidade);
             System.out.println("\n    Alteração de lote(s) na carteira do cliente foi bem sucedida!");
         } catch (ClienteNaoEncontradoException | AcaoNaoEncontradaException e) {
             System.out.println(e.getMessage());
@@ -205,7 +206,6 @@ public class TreeStockView {
     public static void removerAcoesCarteira(TreeStockFacade facade){
         String cpf;
         String siglaAcao;
-        int quantidade;
         Scanner in = new Scanner(System.in);
         
         System.out.println("\n\n  Remover Ações na Carteira");
@@ -377,8 +377,10 @@ public class TreeStockView {
             Iterator it = facade.melhoresClientes(k);
             while(it.hasNext())
                 System.out.println(((Carteira)it.next()));
-        } catch (ClienteNaoEncontradoException | AcaoNaoEncontradaException e) {
-            System.out.println("\n   Top-k deu erro,\n    Clientes e/ou Ações não encontrado");
+        } catch (ClienteNaoEncontradoException e) {
+            System.out.println("\n   Top-k deu erro,\n    Não existe clientes cadastrados");
+        } catch (NumeroClientesInsuficienteException e) {
+            System.out.println("\n   Top-k deu erro,\n    Número de clientes é insuficiente");
         }
     }
     

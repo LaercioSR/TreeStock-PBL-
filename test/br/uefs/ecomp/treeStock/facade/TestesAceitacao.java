@@ -4,10 +4,11 @@ import br.uefs.ecomp.treeStock.model.Acao;
 import br.uefs.ecomp.treeStock.model.Carteira;
 import br.uefs.ecomp.treeStock.model.Cliente;
 import br.uefs.ecomp.treeStock.model.TipoAcao;
-import br.uefs.ecomp.treeStock.model.exception.AcaoNaoEncontradaException;
-import br.uefs.ecomp.treeStock.model.exception.ClienteNaoEncontradoException;
-import br.uefs.ecomp.treeStock.util.DadoDuplicadoException;
-import br.uefs.ecomp.treeStock.util.DadoNaoEncontradoException;
+import br.uefs.ecomp.treeStock.exceptions.AcaoNaoEncontradaException;
+import br.uefs.ecomp.treeStock.exceptions.ClienteNaoEncontradoException;
+import br.uefs.ecomp.treeStock.exceptions.DadoDuplicadoException;
+import br.uefs.ecomp.treeStock.exceptions.DadoNaoEncontradoException;
+import br.uefs.ecomp.treeStock.exceptions.NumeroClientesInsuficienteException;
 import java.util.Iterator;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -176,55 +177,36 @@ public class TestesAceitacao {
 
         facade.removerAcaoCliente("77777777777", "PETR4");
 
-        try {
-            //deve lançar exceção: AcaoNaoEncontradaException
-            facade.getQuantidadeAcaoCliente("77777777777", "PETR4");
-            assertTrue(false);
-        } catch (AcaoNaoEncontradaException e) {
-            assertTrue(true);
-        }
+        assertEquals(0, facade.getQuantidadeAcaoCliente("77777777777", "PETR4"));
     }
 
     @Test
     public void testGetCarteiraCliente() throws ClienteNaoEncontradoException, AcaoNaoEncontradaException, DadoNaoEncontradoException {
-        /*
-        IPares carteira = facade.getCarteiraCliente("Suzana Abreu Lima");
-        assertTrue(carteira.estaVazia());
-
-        double valor = facade.getValorCarteiraCliente("Suzana Abreu Lima");
+        double valor = facade.getValorCarteiraCliente("99999999999");
         assertEquals(0.0, valor, EPSILON);
 
-        facade.setQuantidadeAcaoCliente("Suzana Abreu Lima", "PETR4", 500);
-        carteira = facade.getCarteiraCliente("Suzana Abreu Lima");
-        assertFalse(carteira.estaVazia());
-        assertEquals(500, carteira.get("PETR4"));
-        assertEquals(500, facade.getQuantidadeAcaoCliente("Suzana Abreu Lima", "PETR4"));
+        facade.setQuantidadeAcaoCliente("99999999999", "PETR4", 500);
+        assertEquals(500, facade.getQuantidadeAcaoCliente("99999999999", "PETR4"));
 
-        valor = facade.getValorCarteiraCliente("Suzana Abreu Lima");
-        assertEquals(petr.getValor() * 500, valor, EPSILON);
+        valor = facade.getValorCarteiraCliente("99999999999");
+        assertEquals(petr.getValor() * 500 * 100, valor, EPSILON);
 
-        facade.setQuantidadeAcaoCliente("Suzana Abreu Lima", "EMBR3", 1000);
-        facade.setQuantidadeAcaoCliente("Suzana Abreu Lima", "BBAS3", 100);
-        carteira = facade.getCarteiraCliente("Suzana Abreu Lima");
-        assertFalse(carteira.estaVazia());
-        assertEquals(500, carteira.get("PETR4"));
-        assertEquals(1000, carteira.get("EMBR3"));
-        assertEquals(100, carteira.get("BBAS3"));
+        facade.setQuantidadeAcaoCliente("99999999999", "EMBR3", 1000);
+        facade.setQuantidadeAcaoCliente("99999999999", "BBAS3", 100);
 
-        valor = facade.getValorCarteiraCliente("Suzana Abreu Lima");
-        assertEquals(petr.getValor() * 500 + embr.getValor() * 1000 + bbas.getValor() * 100, valor, EPSILON);
+        valor = facade.getValorCarteiraCliente("99999999999");
+        assertEquals(petr.getValor() * 500 * 100 + embr.getValor() * 1000 * 100 + bbas.getValor() * 100 * 100, valor, EPSILON);
 
-        facade.removerAcaoCliente("Suzana Abreu Lima", "PETR4");
-        facade.removerAcaoCliente("Suzana Abreu Lima", "EMBR3");
-        facade.removerAcaoCliente("Suzana Abreu Lima", "BBAS3");
-
-        carteira = facade.getCarteiraCliente("Suzana Abreu Lima");
-        assertTrue(carteira.estaVazia());
-        */
+        facade.removerAcaoCliente("99999999999", "PETR4");
+        facade.removerAcaoCliente("99999999999", "EMBR3");
+        facade.removerAcaoCliente("99999999999", "BBAS3");
+        
+        valor = facade.getValorCarteiraCliente("99999999999");
+        assertEquals(0.0, valor, EPSILON);
     }
 
     @Test
-    public void testMelhoresClientes() throws ClienteNaoEncontradoException, AcaoNaoEncontradaException, DadoNaoEncontradoException {
+    public void testMelhoresClientes() throws ClienteNaoEncontradoException, AcaoNaoEncontradaException, DadoNaoEncontradoException, NumeroClientesInsuficienteException {
         Iterator melhores = facade.melhoresClientes(0);
         assertFalse(melhores.hasNext());
 

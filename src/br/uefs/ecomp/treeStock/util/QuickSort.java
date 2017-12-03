@@ -2,7 +2,6 @@ package br.uefs.ecomp.TreeStock.util;
 
 //Adaptado da Ordenação QuickSort do livro de Estrutura de dados de Lafore
 
-import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
 

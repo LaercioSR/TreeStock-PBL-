@@ -2,13 +2,14 @@ package br.uefs.ecomp.treeStock.facade;
 
 import br.uefs.ecomp.treeStock.model.Acao;
 import br.uefs.ecomp.treeStock.model.Cliente;
-import br.uefs.ecomp.treeStock.model.exception.AcaoNaoEncontradaException;
-import br.uefs.ecomp.treeStock.model.exception.ClienteNaoEncontradoException;
-import br.uefs.ecomp.treeStock.util.DadoDuplicadoException;
+import br.uefs.ecomp.treeStock.exceptions.AcaoNaoEncontradaException;
+import br.uefs.ecomp.treeStock.exceptions.ClienteNaoEncontradoException;
+import br.uefs.ecomp.treeStock.exceptions.DadoDuplicadoException;
 import br.uefs.ecomp.treeStock.controller.TreeStockController;
 import br.uefs.ecomp.treeStock.model.Carteira;
 import br.uefs.ecomp.treeStock.model.TipoAcao;
-import br.uefs.ecomp.treeStock.util.DadoNaoEncontradoException;
+import br.uefs.ecomp.treeStock.exceptions.DadoNaoEncontradoException;
+import br.uefs.ecomp.treeStock.exceptions.NumeroClientesInsuficienteException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -121,14 +122,6 @@ public class TreeStockFacade {
         }
     }
     
-    public void alterarAcaoCliente(String cpf, String siglaAcao, int quantidade) throws ClienteNaoEncontradoException, AcaoNaoEncontradaException {
-        try {
-            controller.alterarAcaoCliente(cpf, siglaAcao, quantidade);
-        } catch (DadoNaoEncontradoException e) {
-            throw new ClienteNaoEncontradoException("\n    Alteração de ação mal sucedida, \n    Cliente não encontrado");
-        }
-    }
-
     public int getQuantidadeAcaoCliente(String cpf, String siglaAcao) throws ClienteNaoEncontradoException, AcaoNaoEncontradaException {
         try {
             return  controller.getQuantidadeAcaoCliente(cpf, siglaAcao);
@@ -161,7 +154,7 @@ public class TreeStockFacade {
      * @return os k melhores clientes em ordem descrescente de valor da
      * carteira.
      */
-    public Iterator melhoresClientes(int k) throws ClienteNaoEncontradoException, AcaoNaoEncontradaException {
+    public Iterator melhoresClientes(int k) throws ClienteNaoEncontradoException, NumeroClientesInsuficienteException {
         return controller.melhoresClientes(k);
     }
 

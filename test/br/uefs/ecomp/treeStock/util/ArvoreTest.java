@@ -1,5 +1,7 @@
 package br.uefs.ecomp.treeStock.util;
 
+import br.uefs.ecomp.treeStock.exceptions.DadoNaoEncontradoException;
+import br.uefs.ecomp.treeStock.exceptions.DadoDuplicadoException;
 import java.util.Iterator;
 import org.junit.Assert;
 import org.junit.Before;
