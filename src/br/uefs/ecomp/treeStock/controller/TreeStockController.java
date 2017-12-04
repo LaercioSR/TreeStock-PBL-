@@ -1,7 +1,7 @@
 package br.uefs.ecomp.treeStock.controller;
 
 import br.uefs.ecomp.treeStock.exceptions.NumeroClientesInsuficienteException;
-import br.uefs.ecomp.TreeStock.util.QuickSort;
+import br.uefs.ecomp.treeStock.util.QuickSort;
 import br.uefs.ecomp.treeStock.model.Acao;
 import br.uefs.ecomp.treeStock.model.Carteira;
 import br.uefs.ecomp.treeStock.model.Cliente;
@@ -24,12 +24,20 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+/**
+ * Classe {@code TreeStockController} controla todos os dados do sistema, inserindo
+ * removendo e atualizando os dados
+ */
 public class TreeStockController implements Serializable {
     private Arvore clientes = new Arvore();
     private LinkedList<Acao> acoes = new LinkedList();
     private LinkedList<Carteira> contas = new LinkedList();
     
     
+    /**
+     * Método retorna a existencia de um arquivo de salvamento do sistema
+     * @return Se existe um arquivo de salvamento do sistema retorna True
+     */
     public boolean temArquivoSistema(){
         File file = new File("Saves");
         int numeroArquivos = 0;
@@ -42,6 +50,10 @@ public class TreeStockController implements Serializable {
         return numeroArquivos > 0;
     }
     
+    /**
+     * Método retorna o nome do mais novo arquivo de salvamento do sistema
+     * @return Nome do arquivo de salvamento do sistema
+     */
     public String nomeArquivoSistema(){
         File file = new File("Saves");
         File fileMaior;
@@ -58,6 +70,14 @@ public class TreeStockController implements Serializable {
         return fileMaior.getName();
     }
     
+    /**
+     * Método cadastra um novo cliente
+     * @param nome Nome do cliente
+     * @param cpf CPF do cliente
+     * @param endereco Endereço do cliente
+     * @return Cliente cadastrado 
+     * @throws DadoDuplicadoException Se já exista um cliente cadastrado com o CPF fornecido
+     */
     public Cliente cadastrarCliente(String nome, String cpf, String endereco) throws DadoDuplicadoException {
         Cliente cliente = new Cliente(nome, cpf, endereco);
         Carteira carteira = new Carteira(cliente);
@@ -69,6 +89,12 @@ public class TreeStockController implements Serializable {
         return cliente;
     }
 
+    /**
+     * Método remove cliente com o CPF fornecido
+     * @param cpf CPF do cliente a ser removido
+     * @return Cliente removido
+     * @throws DadoNaoEncontradoException Se não for encontrado um cliente cadastrado com CPF fornecido
+     */
     public Cliente removerCliente(String cpf) throws DadoNaoEncontradoException {
         Cliente clienteComp = new Cliente(null, cpf, null);     //instancia um cliente para que possa ser comparado na busca do cliente a ser removido
         Cliente cliente;
@@ -81,12 +107,23 @@ public class TreeStockController implements Serializable {
         return cliente;
     }
 
+    /**
+     * Método busca cliente com o CPF fornecido
+     * @param cpf CPF do cliente a ser buscado
+     * @return Cliente buscado
+     * @throws DadoNaoEncontradoException Se não for encontrado um cliente cadastrado com CPF fornecido
+     */
     public Cliente buscarCliente(String cpf) throws DadoNaoEncontradoException {
         Cliente cliente = new Cliente(null, cpf, null);     //instancia um cliente com CPF passado para que possa ser feito a comparação
         
         return (Cliente) clientes.buscar(cliente);
     }
 
+    /**
+     * Método verifica se existe um cliente cadastrado com CPF fornecido
+     * @param cpf CPF do cliente
+     * @return True se o cliente está cadastrado
+     */
     public boolean clienteCadastrado(String cpf) {
         Cliente cliente = new Cliente(null, cpf, null);
         
@@ -98,6 +135,15 @@ public class TreeStockController implements Serializable {
         return false;
     }
 
+    /**
+     * Método cadastra uma ação no sistema
+     * @param sigla Sigla da ação
+     * @param nome Nome da empresa referente à ação
+     * @param valorInicial Valor inicial da cotação da ação
+     * @param tipoAcao Tipo da ação
+     * @return Ação cadastrada
+     * @throws DadoDuplicadoException Se existe ação cadastrada com a sigla passada
+     */
     public Acao cadastrarAcao(String sigla, String nome, double valorInicial, TipoAcao tipoAcao) throws DadoDuplicadoException {
         Acao acao = new Acao(sigla, nome, valorInicial, tipoAcao);
         Acao acaoComp = null;
@@ -117,6 +163,12 @@ public class TreeStockController implements Serializable {
         return acao;
     }
 
+    /**
+     * Método remove do sistema a ação com a sigla passada
+     * @param sigla Sigla da ação
+     * @return Ação removida
+     * @throws DadoNaoEncontradoException Se não foi encontrada uma ação com a sigla fornecida
+     */
     public Acao removerAcao(String sigla) throws DadoNaoEncontradoException {
         Acao acaoComp = new Acao(sigla);
         Acao acao = null;
@@ -151,6 +203,11 @@ public class TreeStockController implements Serializable {
         return acao;
     }
     
+    /**
+     * Método atualiza as cotações das ações
+     * @param nomeArq Nome do arquivo com as cotações
+     * @throws FileNotFoundException Se o arquivo não foi encontrado
+     */
     public void atualizarCotacoes(String nomeArq) throws FileNotFoundException{
         Scanner in = new Scanner(new File(nomeArq));
         String siglaEmp;
@@ -199,13 +256,24 @@ public class TreeStockController implements Serializable {
         }
     }
 
+    /**
+     * Método verifica se existe ação cadastrada com a sigla passada
+     * @param siglaAcao Sigla da ação
+     * @return True se existe ação cadastrada com a sigla fornecida
+     */
     public boolean acaoCadastrada(String siglaAcao) {
         Acao acao = new Acao(siglaAcao);
         
         return acoes.contains(acao);
     }
 
-    public void setValorAcao(String siglaAcao, double novoValor) {
+    /**
+     * Método modifica o valor da cotação de uma ação
+     * @param siglaAcao Sigla da ação 
+     * @param novoValor Novo valor de cotaçã
+     * @throws DadoNaoEncontradoException Se não foi encontrada uma ação com a sigla fornecida
+     */
+    public void setValorAcao(String siglaAcao, double novoValor) throws DadoNaoEncontradoException {
         Acao acaoCmp = new Acao(siglaAcao);
         Acao acao = null;
         Iterator it = acoes.iterator();
@@ -219,10 +287,18 @@ public class TreeStockController implements Serializable {
         
         if(acao != null && acao.equals(acaoCmp)){
             acao.setValor(novoValor);
+        } else{
+            throw new DadoNaoEncontradoException();
         }
     }
 
-    public double getValorAcao(String siglaAcao) {
+    /**
+     * Método retorna o valor de cotação de uma ação
+     * @param siglaAcao Sigla da ação 
+     * @return Valor da cotação
+     * @throws DadoNaoEncontradoException Se não foi encontrada uma ação com a sigla fornecida
+     */
+    public double getValorAcao(String siglaAcao) throws DadoNaoEncontradoException {
         Acao acaoCmp = new Acao(siglaAcao);
         Acao acao = null;
         Iterator it = acoes.iterator();
@@ -236,14 +312,27 @@ public class TreeStockController implements Serializable {
         
         if(acao != null && acao.equals(acaoCmp)){
             return acao.getValor();
+        } else{
+            throw new DadoNaoEncontradoException();
         }
-        return 0;
     }
 
+    /**
+     * Retorna os clientes ordenados pelo nome
+     * @return <b>Iterator</b> dos clientes ordenados
+     */
     public Iterator iterator() {
         return clientes.iterator();
     }
 
+    /**
+     * Método inclui lotes (100 ações) na carteira de um cliente
+     * @param cpf CPF do cliente
+     * @param siglaAcao Sigla da Ação
+     * @param quantidade Quantidade lotes
+     * @throws DadoNaoEncontradoException Se não for encontrado um cliente cadastrado com CPF fornecido
+     * @throws AcaoNaoEncontradaException Se não foi encontrada uma ação com a sigla fornecida
+     */
     public void incluirAcaoCliente(String cpf, String siglaAcao, int quantidade) throws DadoNaoEncontradoException, AcaoNaoEncontradaException {
         Cliente clienteCmp = new Cliente(null, cpf, null);
         Cliente cliente = (Cliente) clientes.buscar(clienteCmp);
@@ -264,6 +353,13 @@ public class TreeStockController implements Serializable {
         carteira.criarLote(acao, quantidade);
     }
 
+    /**
+     * Método remove lotes (100 ações) da carteira de um cliente
+     * @param cpf CPF do cliente
+     * @param siglaAcao Sigla da ação
+     * @throws DadoNaoEncontradoException Se não for encontrado um cliente cadastrado com CPF fornecido
+     * @throws AcaoNaoEncontradaException Se não foi encontrada uma ação com a sigla fornecida
+     */
     public void removerAcaoCliente(String cpf, String siglaAcao) throws DadoNaoEncontradoException, AcaoNaoEncontradaException {
         Cliente clienteCmp = new Cliente(null, cpf, null);
         Cliente cliente = (Cliente) clientes.buscar(clienteCmp);
@@ -284,6 +380,13 @@ public class TreeStockController implements Serializable {
         carteira.removerLote(lote);
     }
 
+    /**
+     * Método retorna a quantidade de lotes de uma certa ação que um cliente possui
+     * @param cpf CPF do cliente
+     * @param siglaAcao Sigla da ação
+     * @return Quantidade de lotes
+     * @throws DadoNaoEncontradoException Se não for encontrado um cliente cadastrado com CPF fornecido
+     */
     public int getQuantidadeAcaoCliente(String cpf, String siglaAcao) throws DadoNaoEncontradoException {
         Cliente clienteCmp = new Cliente(null, cpf, null);
         Cliente cliente;
@@ -308,6 +411,15 @@ public class TreeStockController implements Serializable {
         }
     }
 
+    /**
+     * Método modifica a quantidade de lotes de uma certa ação na carteira de um cliente
+     * @param cpfCliente CPF do cliente
+     * @param siglaAcao Sigla da ação
+     * @param quantidade Nova quantidade de lotes
+     * @throws ClienteNaoEncontradoException Se não for encontrado um cliente cadastrado com CPF fornecido
+     * @throws AcaoNaoEncontradaException Se não foi encontrada uma ação com a sigla fornecida
+     * @throws DadoNaoEncontradoException Se não existe lote de ação passada na carteira do cliente
+     */
     public void setQuantidadeAcaoCliente(String cpfCliente, String siglaAcao, int quantidade) throws AcaoNaoEncontradaException, ClienteNaoEncontradoException, DadoNaoEncontradoException {
         Cliente clienteCmp = new Cliente(null, cpfCliente, null);
         Cliente cliente;
@@ -350,6 +462,12 @@ public class TreeStockController implements Serializable {
         }
     }
 
+    /**
+     * Método retorna a {@link br.uefs.ecomp.treeStock.model.Carteira carteira} de um cliente
+     * @param cpfCliente CPF do cliente
+     * @return {@link br.uefs.ecomp.treeStock.model.Carteira Carteira} do cliente
+     * @throws ClienteNaoEncontradoException Se não for encontrado um cliente cadastrado com CPF fornecido
+     */
     public Carteira getCarteiraCliente(String cpfCliente) throws ClienteNaoEncontradoException {
         Cliente clienteCmp = new Cliente(null, cpfCliente, null);
         Cliente cliente;
@@ -362,6 +480,12 @@ public class TreeStockController implements Serializable {
         }
     }
 
+    /**
+     * Método retorna o montante da carteira de um cliente
+     * @param cpfCliente CPF do cliente
+     * @return Montante da carteira
+     * @throws ClienteNaoEncontradoException Se não for encontrado um cliente cadastrado com CPF fornecido
+     */
     public double getValorCarteiraCliente(String cpfCliente) throws ClienteNaoEncontradoException {
         Cliente clienteCmp = new Cliente(null, cpfCliente, null);
         Cliente cliente;
@@ -374,6 +498,15 @@ public class TreeStockController implements Serializable {
         }
     }
 
+    /**
+     * Retorna os k melhores clientes em ordem descrescente de valor da
+     * carteira.
+     * @param k Os k melhores clientes
+     * @return Iterator - Iterador dos k melhores clientes em ordem descrescente de valor da
+     * carteira.
+     * @throws ClienteNaoEncontradoException Se não existir clientes cadastrados
+     * @throws NumeroClientesInsuficienteException Se o número K passado for menor que o número de clientes cadastrados
+     */
     public Iterator melhoresClientes(int k) throws ClienteNaoEncontradoException, NumeroClientesInsuficienteException {
         Iterator it = contas.iterator();
         
@@ -391,6 +524,11 @@ public class TreeStockController implements Serializable {
         return QuickSort.ordenar(contas, k);
     }
 
+    /**
+     * Método retorna o valor atualizado da carteira do cliente
+     * @param cpf CPF do cliente
+     * @return Valor da carteira
+     */
     public double valorCarteira(String cpf) {
         Cliente clienteCmp = new Cliente(null, cpf, null);
         Cliente cliente = null;
@@ -409,6 +547,10 @@ public class TreeStockController implements Serializable {
         return 0;
     }
     
+    /**
+     * Método gera arquivo de salvamento do sistema com data e hora do salvamento no nome do arquivo
+     * @throws IOException Caso aconteça algum erro na geração do arquivo
+     */
     public void gerarArquivoSistema() throws IOException {
         Date dataAtual = new Date();
         SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yy HH.mm");

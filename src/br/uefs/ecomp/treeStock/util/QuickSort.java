@@ -5,17 +5,20 @@ package br.uefs.ecomp.treeStock.util;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-
-/*
-    * Os métodos são estáticos para que não seja necessário instanciar um objeto da classe QuickSort.
-    * O algoritmo está adaptado para ordenar em ordem descrecente (na partiçãoo os valores menores que o pivô 
-    ficam na sua direita e os valores maiores ficam a sua esquerda.
-    * Ápos a ordenação é retornado o iterador de uma lista ordenada.
-*/
-
+/**
+ * Classe {@code QuickSort} ordena um <b>LinkedList</b> e retorna o <b>Iterator</b> de
+ * uma nova LinkedList com os k maoires valores. Apenas um método é publico, sendo responsável 
+ * por receber o LinkedList e o números de maiores valores (k) do novo LinkedList. Métodos
+ * são estáticos para não haver necessidade de instanciar um objeto da classe
+ */
 public class QuickSort {
     
-    //método público responsável por iniciar a ordenação e por retornar o iterator da nova lista
+    /**
+     * Método publico responsável por chamar os outros métodos da classe
+     * @param lista LinkedList há ser ordenado
+     * @param k Número de elementos do <b>LinkedList</b> de maiores valores
+     * @return Iterator do LinkedList de maiores valores
+     */
     public static Iterator ordenar(LinkedList lista, int k){
         int nElementos = lista.size();
         Comparable[] array = new Comparable[nElementos];
@@ -24,7 +27,11 @@ public class QuickSort {
         return copiaArray(array, k).iterator();
     }
     
-    //método copia a lista para um array
+    /**
+     * Método copia o lista passada para classe em um array
+     * @param lista LinkedList dos elementos a ser ordenados
+     * @param array Array que será ordenado
+     */
     private static void copiarLista(LinkedList lista, Comparable[] array){
         Iterator it = lista.iterator();
         
@@ -34,6 +41,12 @@ public class QuickSort {
     }
     
     //método copia o array ordenado para uma nova lista
+    /**
+     * Método copia o array ordenado para um novo LinkedList com k elementos
+     * @param array Array ordenado
+     * @param k Número de elementos do LinkedList
+     * @return LinkedList dos elementos ordenados
+     */
     private static LinkedList copiaArray(Comparable[] array, int k){
         LinkedList listaOrdenada = new LinkedList();
         
@@ -44,6 +57,12 @@ public class QuickSort {
         return listaOrdenada;
     }
     
+    /**
+     * Método responsável pela ordenação do Array
+     * @param array Array há ser ordenado
+     * @param esquerda Posição inicial da partição do array
+     * @param direita Posição final da partição do array
+     */
     private static void recQuickSort(Comparable[] array, int esquerda, int direita){
         if(direita - esquerda <= 0){
             
@@ -57,6 +76,15 @@ public class QuickSort {
         }
     }
 
+    /**
+     * Método particiona o Array em duas partes em relação ao pivô, elementos menores à 
+     * esquerda do pivô, e o maiores à direita
+     * @param array Array há ser particionado
+     * @param esquerda Posição inical da parte há ser particionado do array
+     * @param direita Posição final da parte há ser particionado do array
+     * @param pivo Elemento pivô
+     * @return Posição final do particionamento do array
+     */
     private static int partir(Comparable[] array, int esquerda, int direita, Comparable pivo) {
         int esquerdaPtr = esquerda - 1;
         int direitaPtr = direita;
@@ -80,6 +108,12 @@ public class QuickSort {
     }
     
     //método para trocar posições no array
+    /**
+     * Método para trocar posições no array 
+     * @param array Array que terá troca de posições entre 2 elementos
+     * @param pos1 Posição do elemento 1
+     * @param pos2 Posição do elemento 2
+     */
     private static void swap(Comparable[] array, int pos1, int pos2) {
         Comparable temp = array[pos1];
         array[pos1] = array[pos2];

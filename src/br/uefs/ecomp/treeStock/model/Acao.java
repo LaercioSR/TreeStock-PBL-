@@ -5,6 +5,7 @@ import java.io.Serializable;
 /**
  * A clsse {@code Acao} mantem os dados referentes a acão da bolsa 
  * de valores de uma empresa
+ * @see TipoAcao
  * @see java.util.LinkedList
  */
 public class Acao implements Serializable {
@@ -18,7 +19,7 @@ public class Acao implements Serializable {
      * @param sigla Sigla da ação
      * @param nome Nome da empresa refente a ação
      * @param valorInicial Cotação inial da ação
-     * @param tipoAcao - Define o se a ação é Ordinária ou Preferencial
+     * @param tipoAcao Define o se a ação é Ordinária ou Preferencial
      */
     public Acao(String sigla, String nome, double valorInicial, TipoAcao tipoAcao) {
         this.sigla = sigla;
@@ -61,8 +62,8 @@ public class Acao implements Serializable {
     }
 
     /**
-     * Método para retornar o tipo da ação
-     * @return Tipo da ação
+     * Método para retornar o {@link TipoAcao tipo da ação}
+     * @return {@link TipoAcao Tipo da ação}
      */
     public TipoAcao getTipoAcao() {
         return tipoAcao;

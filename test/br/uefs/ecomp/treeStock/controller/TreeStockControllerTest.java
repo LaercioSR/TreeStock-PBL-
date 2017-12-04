@@ -96,7 +96,7 @@ public class TreeStockControllerTest {
     public void testAtualizarCotacoes() throws DadoDuplicadoException, FileNotFoundException {
         controller.cadastrarAcao("VR14", "vr14.com.br", 21.05, TipoAcao.ON);
         Assert.assertEquals(21.05, controller.getValorAcao("VR14"), EPSILON);
-        controller.atualizarCotacoes("ArquivosTesteCotacoes/CotacoesHistoricas.txt");
+        controller.atualizarCotacoes("ArquivosTesteCotacoes/CotacoesHistoricas1.txt");
         Assert.assertEquals(32.81, controller.getValorAcao("VR14"), EPSILON);
     }
     
@@ -240,11 +240,22 @@ public class TreeStockControllerTest {
     @Test
     public void testSaldoCliente() throws DadoDuplicadoException, DadoNaoEncontradoException, AcaoNaoEncontradaException, ClienteNaoEncontradoException, FileNotFoundException{
         controller.cadastrarCliente("João da Silva", "55555555555", "Feira de Santana-BA");
+        controller.cadastrarCliente("Maria", "44444444444", "Araraquara-SP");
         controller.cadastrarAcao("FACE", "facebook", 11.50, TipoAcao.PN);
+        controller.cadastrarAcao("VR14", "vr14.com.br", 21.00, TipoAcao.ON);
         controller.incluirAcaoCliente("55555555555", "FACE", 5);
         Assert.assertEquals(11.50 * 5 * 100, controller.getValorCarteiraCliente("55555555555"), EPSILON);
-        controller.atualizarCotacoes("ArquivosTesteCotacoes/CotacoesHistoricas.txt");
+        controller.atualizarCotacoes("ArquivosTesteCotacoes/CotacoesHistoricas1.txt");
         Assert.assertEquals(1 * 5 * 100, controller.getCarteiraCliente("55555555555").getSaldo(), EPSILON);
         Assert.assertEquals((30.56 * 5 * 100) + (1 * 5 * 100), controller.getValorCarteiraCliente("55555555555"), EPSILON);
+        controller.incluirAcaoCliente("44444444444", "FACE", 2);
+        controller.incluirAcaoCliente("55555555555", "VR14", 4);
+        Assert.assertEquals(30.56 * 2 * 100, controller.getValorCarteiraCliente("44444444444"), EPSILON);
+        Assert.assertEquals((30.56 * 5 * 100) + (1 * 5 * 100) + (32.81 * 4 * 100), controller.getValorCarteiraCliente("55555555555"), EPSILON);
+        controller.atualizarCotacoes("ArquivosTesteCotacoes/CotacoesHistoricas2.txt");
+        Assert.assertEquals(1.7 * 5 * 100, controller.getCarteiraCliente("55555555555").getSaldo(), EPSILON);
+        Assert.assertEquals(0.7 * 2 * 100, controller.getCarteiraCliente("44444444444").getSaldo(), EPSILON);
+        Assert.assertEquals((31.96 * 2 * 100) + (0.7 * 2 * 100), controller.getValorCarteiraCliente("44444444444"), EPSILON);
+        Assert.assertEquals((31.96 * 5 * 100) + (1.7 * 5 * 100) + (35.72 * 4 * 100), controller.getValorCarteiraCliente("55555555555"), EPSILON);
     }
 }
