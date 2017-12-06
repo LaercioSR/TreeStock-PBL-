@@ -2,6 +2,7 @@ package br.uefs.ecomp.treeStock.controller;
 
 import br.uefs.ecomp.treeStock.model.Cliente;
 import br.uefs.ecomp.treeStock.model.TipoAcao;
+import br.uefs.ecomp.treeStock.exceptions.AcaoEmCarteiraException;
 import br.uefs.ecomp.treeStock.exceptions.AcaoNaoEncontradaException;
 import br.uefs.ecomp.treeStock.exceptions.ClienteNaoEncontradoException;
 import br.uefs.ecomp.treeStock.exceptions.DadoDuplicadoException;
@@ -80,7 +81,7 @@ public class TreeStockControllerTest {
     }
     
     @Test
-    public void testRemoverAcao() throws DadoDuplicadoException, DadoNaoEncontradoException{
+    public void testRemoverAcao() throws DadoDuplicadoException, DadoNaoEncontradoException, AcaoEmCarteiraException{
         controller.cadastrarAcao("FACE", "facebook", 11.50, TipoAcao.ON);
         Assert.assertTrue(controller.acaoCadastrada("FACE"));
         controller.removerAcao("FACE");
@@ -88,12 +89,20 @@ public class TreeStockControllerTest {
     }
     
     @Test (expected = DadoNaoEncontradoException.class)
-    public void testRemoverAcaoNaoCadastrada() throws DadoNaoEncontradoException{
+    public void testRemoverAcaoNaoCadastrada() throws DadoNaoEncontradoException, AcaoEmCarteiraException{
         controller.removerAcao("FACE");
     }
     
+    @Test (expected = AcaoEmCarteiraException.class)
+    public void testRemoverAcaoPertencenteAUmaCarteira() throws DadoDuplicadoException, DadoNaoEncontradoException, AcaoNaoEncontradaException, AcaoEmCarteiraException{
+        controller.cadastrarCliente("João da Silva", "55555555555", "Feira de Santana-BA");
+        controller.cadastrarAcao("VR14", "vr14.com.br", 21.05, TipoAcao.ON);
+        controller.incluirAcaoCliente("55555555555", "VR14", 5);
+        controller.removerAcao("VR14");
+    }
+    
     @Test
-    public void testAtualizarCotacoes() throws DadoDuplicadoException, FileNotFoundException {
+    public void testAtualizarCotacoes() throws DadoDuplicadoException, FileNotFoundException, DadoNaoEncontradoException {
         controller.cadastrarAcao("VR14", "vr14.com.br", 21.05, TipoAcao.ON);
         Assert.assertEquals(21.05, controller.getValorAcao("VR14"), EPSILON);
         controller.atualizarCotacoes("ArquivosTesteCotacoes/CotacoesHistoricas1.txt");
@@ -101,7 +110,7 @@ public class TreeStockControllerTest {
     }
     
     @Test
-    public void testIncluirAcaoEmCarteira() throws DadoDuplicadoException, DadoNaoEncontradoException, AcaoNaoEncontradaException{
+    public void testIncluirAcaoEmCarteira() throws DadoDuplicadoException, DadoNaoEncontradoException, AcaoNaoEncontradaException, AcaoEmCarteiraException{
         controller.cadastrarCliente("João da Silva", "55555555555", "Feira de Santana-BA");
         controller.cadastrarAcao("VR14", "vr14.com.br", 21.05, TipoAcao.ON);
         Assert.assertEquals( 0, controller.getQuantidadeAcaoCliente("55555555555", "VR14"));
@@ -110,19 +119,27 @@ public class TreeStockControllerTest {
     }
     
     @Test (expected = AcaoNaoEncontradaException.class)
-    public void testIncluirAcaoNaoExistenteEmCarteira() throws DadoDuplicadoException, DadoNaoEncontradoException, AcaoNaoEncontradaException{
+    public void testIncluirAcaoNaoExistenteEmCarteira() throws DadoDuplicadoException, DadoNaoEncontradoException, AcaoNaoEncontradaException, AcaoEmCarteiraException{
         controller.cadastrarCliente("João da Silva", "55555555555", "Feira de Santana-BA");
         controller.incluirAcaoCliente("55555555555", "VR14", 10);
     }
     
     @Test (expected = DadoNaoEncontradoException.class)
-    public void testIncluirAcaoEmCarteiraInexistente() throws DadoDuplicadoException, DadoNaoEncontradoException, AcaoNaoEncontradaException{
+    public void testIncluirAcaoEmCarteiraInexistente() throws DadoDuplicadoException, DadoNaoEncontradoException, AcaoNaoEncontradaException, AcaoEmCarteiraException{
         controller.cadastrarAcao("VR14", "vr14.com.br", 21.05, TipoAcao.ON);
         controller.incluirAcaoCliente("55555555555", "VR14", 10);
     }
     
+    @Test (expected = AcaoEmCarteiraException.class)
+    public void testIncluirAcaoJaExistenteNaCarteira() throws DadoDuplicadoException, DadoNaoEncontradoException, AcaoNaoEncontradaException, AcaoEmCarteiraException{
+        controller.cadastrarCliente("João da Silva", "55555555555", "Feira de Santana-BA");
+        controller.cadastrarAcao("VR14", "vr14.com.br", 21.05, TipoAcao.ON);
+        controller.incluirAcaoCliente("55555555555", "VR14", 10);
+        controller.incluirAcaoCliente("55555555555", "VR14", 5);
+    }
+    
     @Test
-    public void testRemoverAcaoEmCarteira() throws DadoDuplicadoException, DadoNaoEncontradoException, AcaoNaoEncontradaException{
+    public void testRemoverAcaoEmCarteira() throws DadoDuplicadoException, DadoNaoEncontradoException, AcaoNaoEncontradaException, AcaoEmCarteiraException{
         controller.cadastrarCliente("João da Silva", "55555555555", "Feira de Santana-BA");
         controller.cadastrarAcao("VR14", "vr14.com.br", 21.05, TipoAcao.ON);
         controller.incluirAcaoCliente("55555555555", "VR14", 10);
@@ -144,7 +161,7 @@ public class TreeStockControllerTest {
     }
     
     @Test
-    public void testAlterarAcaoEmCarteira() throws DadoDuplicadoException, DadoNaoEncontradoException, AcaoNaoEncontradaException, ClienteNaoEncontradoException{
+    public void testAlterarAcaoEmCarteira() throws DadoDuplicadoException, DadoNaoEncontradoException, AcaoNaoEncontradaException, ClienteNaoEncontradoException, AcaoEmCarteiraException{
         controller.cadastrarCliente("João da Silva", "55555555555", "Feira de Santana-BA");
         controller.cadastrarAcao("VR14", "vr14.com.br", 21.05, TipoAcao.ON);
         controller.incluirAcaoCliente("55555555555", "VR14", 10);
@@ -213,7 +230,7 @@ public class TreeStockControllerTest {
     }
     
     @Test 
-    public void testMelhoresClientes() throws ClienteNaoEncontradoException, DadoDuplicadoException, NumeroClientesInsuficienteException, AcaoNaoEncontradaException, DadoNaoEncontradoException{
+    public void testMelhoresClientes() throws ClienteNaoEncontradoException, DadoDuplicadoException, NumeroClientesInsuficienteException, AcaoNaoEncontradaException, DadoNaoEncontradoException, AcaoEmCarteiraException{
         controller.cadastrarCliente("João da Nica", "55555555555", "Sabe onde eu tô?");
         controller.cadastrarCliente("Zé Ninguém", "33333333333", "Pintadas-BA");
         controller.cadastrarCliente("Irineu, você não, nem eu", "88888888888", "Vitória-ES");
@@ -238,7 +255,7 @@ public class TreeStockControllerTest {
     }
     
     @Test
-    public void testSaldoCliente() throws DadoDuplicadoException, DadoNaoEncontradoException, AcaoNaoEncontradaException, ClienteNaoEncontradoException, FileNotFoundException{
+    public void testSaldoCliente() throws DadoDuplicadoException, DadoNaoEncontradoException, AcaoNaoEncontradaException, ClienteNaoEncontradoException, FileNotFoundException, AcaoEmCarteiraException{
         controller.cadastrarCliente("João da Silva", "55555555555", "Feira de Santana-BA");
         controller.cadastrarCliente("Maria", "44444444444", "Araraquara-SP");
         controller.cadastrarAcao("FACE", "facebook", 11.50, TipoAcao.PN);

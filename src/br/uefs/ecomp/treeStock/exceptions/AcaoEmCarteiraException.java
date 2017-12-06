@@ -1,17 +1,16 @@
 package br.uefs.ecomp.treeStock.exceptions;
 
-import java.io.Serializable;
-
 /**
- * Exceção lançada quando uma ação não foi encontrada na estrutura de dado
+ * Exceção lançada quando o usuário tentar remover uma ação que pertence a uma carteira
  * @see br.uefs.ecomp.treeStock.model.Acao
+ * @see br.uefs.ecomp.treeStock.model.Carteira
  */
-public class AcaoNaoEncontradaException extends Exception implements Serializable {
+public class AcaoEmCarteiraException extends Exception {
     
     /**
      * Controi a exceção
      */
-    public AcaoNaoEncontradaException() {
+    public AcaoEmCarteiraException() {
         super();
     }
 
@@ -19,11 +18,11 @@ public class AcaoNaoEncontradaException extends Exception implements Serializabl
      * Constroi a exceção com uma mensagem que poderá ser exibida
      * @param msg Mensagem que será exibida na tela
      */
-    public AcaoNaoEncontradaException(String msg) {
+    public AcaoEmCarteiraException(String msg) {
         super(msg);
     }
 
-    public AcaoNaoEncontradaException(Throwable exception) {
+    public AcaoEmCarteiraException(Throwable exception) {
         super(exception);
     }
 }

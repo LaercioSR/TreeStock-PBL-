@@ -44,4 +44,12 @@ public class Lote implements Serializable {
     public void setQuantidadeLotes(int quantidadeLotes) {
         this.quantidadeLotes = quantidadeLotes;
     }
+    
+    @Override
+    public String toString(){
+        return "Ação: " +
+                "\n  Nome: " + acao.getNome() +
+                "\n  Sigla: " + acao.getSigla() +
+               "\nQuantidade de Lotes: " + quantidadeLotes;
+    }
 }

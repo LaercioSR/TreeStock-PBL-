@@ -1,7 +1,7 @@
 package br.uefs.ecomp.treeStock.facade;
 
+import br.uefs.ecomp.treeStock.exceptions.AcaoEmCarteiraException;
 import br.uefs.ecomp.treeStock.model.Acao;
-import br.uefs.ecomp.treeStock.model.Carteira;
 import br.uefs.ecomp.treeStock.model.Cliente;
 import br.uefs.ecomp.treeStock.model.TipoAcao;
 import br.uefs.ecomp.treeStock.exceptions.AcaoNaoEncontradaException;
@@ -97,7 +97,7 @@ public class TestesAceitacao {
     }
 
     @Test
-    public void testRemoverAcao() throws DadoDuplicadoException, AcaoNaoEncontradaException {
+    public void testRemoverAcao() throws DadoDuplicadoException, AcaoNaoEncontradaException, AcaoEmCarteiraException {
         assertTrue(facade.acaoCadastrada("EMBR3"));
 
         Acao acao = facade.removerAcao("EMBR3");
@@ -107,7 +107,7 @@ public class TestesAceitacao {
     }
 
     @Test(expected = AcaoNaoEncontradaException.class)
-    public void testRemoverAcaoInexistente() throws AcaoNaoEncontradaException {
+    public void testRemoverAcaoInexistente() throws AcaoNaoEncontradaException, AcaoEmCarteiraException {
         //deve lançar exceção
         facade.removerAcao("UEFS3");
     }
@@ -150,13 +150,7 @@ public class TestesAceitacao {
 
     @Test
     public void testIncluirAcaoCliente() throws ClienteNaoEncontradoException, AcaoNaoEncontradaException, DadoDuplicadoException {
-        try {
-            facade.getQuantidadeAcaoCliente("77777777777", "PETR4");
-        } catch (AcaoNaoEncontradaException e) {
-            //indica que a carteira do cliente não possui esta ação
-            facade.incluirAcaoCliente("77777777777", "PETR4", 1000);
-            assertEquals(1000, facade.getQuantidadeAcaoCliente("77777777777", "PETR4"));
-        }
+        facade.getQuantidadeAcaoCliente("77777777777", "PETR4"); //indica que a carteira do cliente não possui esta ação
     }
 
     @Test(expected = ClienteNaoEncontradoException.class)

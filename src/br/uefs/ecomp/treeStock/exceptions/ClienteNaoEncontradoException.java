@@ -1,11 +1,10 @@
 package br.uefs.ecomp.treeStock.exceptions;
 
-import java.io.Serializable;
-
 /**
  * Exceção lençada quando um cliente não é encontrado em uma estrutura de dados
+ * @see br.uefs.ecomp.treeStock.model.Cliente
  */
-public class ClienteNaoEncontradoException extends Exception implements Serializable {
+public class ClienteNaoEncontradoException extends Exception {
 
     /**
      * Controi a exceção

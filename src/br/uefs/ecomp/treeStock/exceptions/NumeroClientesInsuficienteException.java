@@ -3,6 +3,7 @@ package br.uefs.ecomp.treeStock.exceptions;
 /**
  * Exceção lançada quando é necissatado um número de cliente superior 
  * ao número de cadastrados
+ * @see br.uefs.ecomp.treeStock.model.Cliente
  */
 public class NumeroClientesInsuficienteException extends Exception {
 

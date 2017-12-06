@@ -6,6 +6,7 @@ import br.uefs.ecomp.treeStock.exceptions.AcaoNaoEncontradaException;
 import br.uefs.ecomp.treeStock.exceptions.ClienteNaoEncontradoException;
 import br.uefs.ecomp.treeStock.exceptions.DadoDuplicadoException;
 import br.uefs.ecomp.treeStock.controller.TreeStockController;
+import br.uefs.ecomp.treeStock.exceptions.AcaoEmCarteiraException;
 import br.uefs.ecomp.treeStock.model.Carteira;
 import br.uefs.ecomp.treeStock.model.TipoAcao;
 import br.uefs.ecomp.treeStock.exceptions.DadoNaoEncontradoException;
@@ -133,8 +134,9 @@ public class TreeStockFacade {
      * @param siglaAcao Sigla da ação
      * @return Ação removida
      * @throws AcaoNaoEncontradaException Se não foi encontrada uma ação com a sigla fornecida
+     * @throws AcaoEmCarteiraException Se a ação estiver em uma carteira
      */
-    public Acao removerAcao(String siglaAcao) throws AcaoNaoEncontradaException {
+    public Acao removerAcao(String siglaAcao) throws AcaoNaoEncontradaException, AcaoEmCarteiraException {
         try{
             Acao acao = controller.removerAcao(siglaAcao);
             return acao;
@@ -205,11 +207,15 @@ public class TreeStockFacade {
      * @throws ClienteNaoEncontradoException Se não for encontrado um cliente cadastrado com CPF fornecido
      * @throws AcaoNaoEncontradaException Se não foi encontrada uma ação com a sigla fornecida
      */
-    public void incluirAcaoCliente(String cpf, String siglaAcao, int quantidade) throws ClienteNaoEncontradoException, AcaoNaoEncontradaException{
+    public void incluirAcaoCliente(String cpf, String siglaAcao, int quantidade) throws ClienteNaoEncontradoException, AcaoNaoEncontradaException {
         try {
             controller.incluirAcaoCliente(cpf, siglaAcao, quantidade);
         } catch (DadoNaoEncontradoException ex) {
             throw new ClienteNaoEncontradoException("\n    Inserção de lote mal sucedida, \n    Cliente não encontrado");
+        } catch (AcaoEmCarteiraException ex) {
+            try {
+                controller.setQuantidadeAcaoCliente(cpf, siglaAcao, quantidade);
+            } catch (DadoNaoEncontradoException ex1) { }
         }
     }
 

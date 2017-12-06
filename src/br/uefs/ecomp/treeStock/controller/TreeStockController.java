@@ -1,5 +1,6 @@
 package br.uefs.ecomp.treeStock.controller;
 
+import br.uefs.ecomp.treeStock.exceptions.AcaoEmCarteiraException;
 import br.uefs.ecomp.treeStock.exceptions.NumeroClientesInsuficienteException;
 import br.uefs.ecomp.treeStock.util.QuickSort;
 import br.uefs.ecomp.treeStock.model.Acao;
@@ -154,6 +155,7 @@ public class TreeStockController implements Serializable {
             if(acao.equals(acaoComp))
                 break;
         }
+        
         if(acaoComp != null && acao.equals(acaoComp)){
             throw new DadoDuplicadoException();
         }
@@ -168,8 +170,9 @@ public class TreeStockController implements Serializable {
      * @param sigla Sigla da ação
      * @return Ação removida
      * @throws DadoNaoEncontradoException Se não foi encontrada uma ação com a sigla fornecida
+     * @throws AcaoEmCarteiraException Se a ação estiver em uma carteira
      */
-    public Acao removerAcao(String sigla) throws DadoNaoEncontradoException {
+    public Acao removerAcao(String sigla) throws DadoNaoEncontradoException, AcaoEmCarteiraException {
         Acao acaoComp = new Acao(sigla);
         Acao acao = null;
         Iterator itAcao = acoes.iterator();
@@ -195,7 +198,7 @@ public class TreeStockController implements Serializable {
                 Lote lote = (Lote) itLotes.next();
                 
                 if(lote.getAcao().getSigla().equals(acao.getSigla())){
-                    carteira.removerLote(lote);
+                    throw new AcaoEmCarteiraException();
                 }
             }
         }
@@ -332,14 +335,23 @@ public class TreeStockController implements Serializable {
      * @param quantidade Quantidade lotes
      * @throws DadoNaoEncontradoException Se não for encontrado um cliente cadastrado com CPF fornecido
      * @throws AcaoNaoEncontradaException Se não foi encontrada uma ação com a sigla fornecida
+     * @throws AcaoEmCarteiraException Se a ação já está na carteira do cliente
      */
-    public void incluirAcaoCliente(String cpf, String siglaAcao, int quantidade) throws DadoNaoEncontradoException, AcaoNaoEncontradaException {
+    public void incluirAcaoCliente(String cpf, String siglaAcao, int quantidade) throws DadoNaoEncontradoException, AcaoNaoEncontradaException, AcaoEmCarteiraException {
         Cliente clienteCmp = new Cliente(null, cpf, null);
         Cliente cliente = (Cliente) clientes.buscar(clienteCmp);
         Acao acaoCmp = new Acao(siglaAcao);
         Acao acao = null;
         Carteira carteira = cliente.getCarteira();
         Iterator it = acoes.iterator();
+        Iterator itLotes = carteira.iteratorLotes();
+        
+        while(itLotes.hasNext()){
+            Lote lote = (Lote) itLotes.next();
+            if(lote.getAcao().equals(acaoCmp)){
+                throw new AcaoEmCarteiraException();
+            }
+        }
         
         while(it.hasNext()){
             acao = (Acao) it.next();
@@ -537,7 +549,6 @@ public class TreeStockController implements Serializable {
         while(it.hasNext()){
             cliente = (Cliente) it.next();
             if(cliente.getCpf().equals(clienteCmp.getCpf())){
-                System.out.println(cliente.getNome());
                 break;
             }
         }

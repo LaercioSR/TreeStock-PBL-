@@ -1,5 +1,6 @@
 package br.uefs.ecomp.treeStock.view;
 
+import br.uefs.ecomp.treeStock.exceptions.AcaoEmCarteiraException;
 import br.uefs.ecomp.treeStock.facade.TreeStockFacade;
 import br.uefs.ecomp.treeStock.model.Acao;
 import br.uefs.ecomp.treeStock.model.Carteira;
@@ -330,7 +331,7 @@ public class TreeStockView {
         in.nextLine();    //esvaziar buffer do teclado
         nome = in.nextLine();
         System.out.print("   Digite o inicial da cotação da ação: ");
-        valorInicial = in.nextDouble();
+        valorInicial = Double.parseDouble(in.next());
         do{
             System.out.println("   Digite a opção desejada, referente ao tipo de Ação: ");
             System.out.println("    1 - Ordinária \n    2 - Preferêncial");
@@ -369,6 +370,8 @@ public class TreeStockView {
             System.out.println("\n    Ação da empresa " + acao.getNome() + " removido com sucesso!");
         } catch(AcaoNaoEncontradaException e){
             System.out.println(e.getMessage());
+        } catch (AcaoEmCarteiraException e) {
+            System.out.println("\n    Remoção de ação mal sucedido,\n     Ação se encontra em uma carteira!");
         }
     }
     
