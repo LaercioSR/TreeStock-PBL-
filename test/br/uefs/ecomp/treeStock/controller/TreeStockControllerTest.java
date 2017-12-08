@@ -233,7 +233,7 @@ public class TreeStockControllerTest {
     public void testMelhoresClientes() throws ClienteNaoEncontradoException, DadoDuplicadoException, NumeroClientesInsuficienteException, AcaoNaoEncontradaException, DadoNaoEncontradoException, AcaoEmCarteiraException{
         controller.cadastrarCliente("João da Nica", "55555555555", "Sabe onde eu tô?");
         controller.cadastrarCliente("Zé Ninguém", "33333333333", "Pintadas-BA");
-        controller.cadastrarCliente("Irineu, você não, nem eu", "88888888888", "Vitória-ES");
+        controller.cadastrarCliente("Irineu, você não sabe, nem eu", "88888888888", "Vitória-ES");
         controller.cadastrarCliente("Rolezera", "77777777777", "Parque Ibiapoera, São Paulo-SP");
         controller.cadastrarCliente("Galo Cego", "11111111111", "Maringá-PR");
         controller.cadastrarAcao("FACE", "facebook", 11.50, TipoAcao.ON);
@@ -247,7 +247,7 @@ public class TreeStockControllerTest {
         controller.incluirAcaoCliente("77777777777", "VR14", 25);
         controller.incluirAcaoCliente("11111111111", "VR14", 5);
         Iterator it = controller.melhoresClientes(5);
-        Assert.assertEquals("Irineu, você não, nem eu", ((Carteira) it.next()).getNomeDonoConta());
+        Assert.assertEquals("Irineu, você não sabe, nem eu", ((Carteira) it.next()).getNomeDonoConta());
         Assert.assertEquals("Rolezera", ((Carteira) it.next()).getNomeDonoConta());
         Assert.assertEquals("Zé Ninguém", ((Carteira) it.next()).getNomeDonoConta());
         Assert.assertEquals("João da Nica", ((Carteira) it.next()).getNomeDonoConta());

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="LAPTOP-1CBGIFK8" name="br.uefs.ecomp.treeStock.util.ArvoreTest" skipped="0" tests="7" time="0.169" timestamp="2017-12-06T16:33:38">
+<testsuite errors="0" failures="0" hostname="LAPTOP-1CBGIFK8" name="br.uefs.ecomp.treeStock.util.ArvoreTest" skipped="0" tests="7" time="0.109" timestamp="2017-12-07T15:39:46">
   <properties>
     <property name="libs.jsp-compiler.javadoc" value="" />
     <property name="netbeans.autoupdate.country" value="BR" />
@@ -58,7 +58,7 @@
     <property name="libs.j2me_common_ant.maven-pom" value="" />
     <property name="libs.spring-webmvc3.0.maven-pom" value="" />
     <property name="libs.swing-layout.maven-pom" value="" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner br.uefs.ecomp.treeStock.util.ArvoreTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Users\laerc\OneDrive\Documentos\ECOMP (UEFS)\2º Semestre\PBL - Programação\3º Problema\TreeStock\build\test\results\TEST-br.uefs.ecomp.treeStock.util.ArvoreTest.xml crashfile=C:\Users\laerc\OneDrive\Documentos\ECOMP (UEFS)\2º Semestre\PBL - Programação\3º Problema\TreeStock\build\junitvmwatcher2493198351980208277.properties propsfile=C:\Users\laerc\OneDrive\Documentos\ECOMP (UEFS)\2º Semestre\PBL - Programação\3º Problema\TreeStock\build\junit1683550678790874377.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner br.uefs.ecomp.treeStock.util.ArvoreTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\Users\laerc\OneDrive\Documentos\ECOMP (UEFS)\2º Semestre\PBL - Programação\3º Problema\TreeStock\build\test\results\TEST-br.uefs.ecomp.treeStock.util.ArvoreTest.xml crashfile=C:\Users\laerc\OneDrive\Documentos\ECOMP (UEFS)\2º Semestre\PBL - Programação\3º Problema\TreeStock\build\junitvmwatcher1127395360702000960.properties propsfile=C:\Users\laerc\OneDrive\Documentos\ECOMP (UEFS)\2º Semestre\PBL - Programação\3º Problema\TreeStock\build\junit1535218245719276761.properties" />
     <property name="build.classes.dir" value="build/classes" />
     <property name="netbeans.accept_license_class" value="org.netbeans.license.AcceptLicense" />
     <property name="build.sysclasspath" value="ignore" />
@@ -245,7 +245,6 @@
     <property name="libs.DataBindingME-SVG.src" value="C:\Program Files\NetBeans 8.2\mobility\sources\netbeans_databindingme_svg-src.zip" />
     <property name="dist.jar" value="dist/TreeStock.jar" />
     <property name="libs.spring-framework400.maven-pom" value="" />
-    <property name="netbeans.automatic.build" value="true" />
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
     <property name="ant.project.name" value="TreeStock" />
     <property name="netbeans.hash.code" value="unique=NB_CND_EXTIDE_GFMOD_GROOVY_JAVA_JC_MOB_PHP_WEBCOMMON_WEBEE0053b4a11-dd54-4254-b6a3-a278f26b6f68_962bf25b-e5bc-41db-b4ac-1b1558e19595" />
@@ -293,15 +292,15 @@
     <property name="jdk.launcher.addexports.4" value="java.desktop/com.sun.java.swing.plaf.windows=ALL-UNNAMED" />
     <property name="work.dir" value="C:\Users\laerc\OneDrive\Documentos\ECOMP (UEFS)\2º Semestre\PBL - Programação\3º Problema\TreeStock" />
     <property name="jdk.launcher.addexports.3" value="java.desktop/sun.awt.im=ALL-UNNAMED" />
-    <property name="jdk.launcher.addexports.2" value="java.desktop/java.awt.peer=ALL-UNNAMED" />
     <property name="libs.jaxb.classpath" value="C:\Program Files\NetBeans 8.2\ide\modules\ext\jaxb\jaxb-impl.jar;C:\Program Files\NetBeans 8.2\ide\modules\ext\jaxb\jaxb-xjc.jar;C:\Program Files\NetBeans 8.2\ide\modules\ext\jaxb\jaxb1-impl.jar;C:\Program Files\NetBeans 8.2\ide\modules\ext\jaxb\activation.jar;C:\Program Files\NetBeans 8.2\ide\modules\ext\jaxb\api\jaxb-api.jar;C:\Program Files\NetBeans 8.2\ide\modules\ext\jaxb\api\jsr173_1.0_api.jar" />
+    <property name="jdk.launcher.addexports.2" value="java.desktop/java.awt.peer=ALL-UNNAMED" />
     <property name="jdk.launcher.addexports.1" value="java.base/jdk.internal.jrtfs=ALL-UNNAMED" />
     <property name="jdk.launcher.addexports.0" value="java.desktop/sun.awt=ALL-UNNAMED" />
     <property name="do.depend" value="false" />
-    <property name="dist.javadoc.dir" value="dist/javadoc" />
     <property name="libs.j2me_common_ant.classpath" value="C:\Program Files\NetBeans 8.2\mobility\modules\org-netbeans-modules-j2me-common-ant.jar;C:\Program Files\NetBeans 8.2\java\modules\org-netbeans-modules-classfile.jar" />
-    <property name="libs.swing-layout.classpath" value="C:\Program Files\NetBeans 8.2\platform\modules\ext\swing-layout-1.0.4.jar" />
+    <property name="dist.javadoc.dir" value="dist/javadoc" />
     <property name="libs.spring-webmvc3.0.classpath" value="C:\Program Files\NetBeans 8.2\java\modules\ext\spring-3.0\spring-webmvc-3.2.7.RELEASE.jar" />
+    <property name="libs.swing-layout.classpath" value="C:\Program Files\NetBeans 8.2\platform\modules\ext\swing-layout-1.0.4.jar" />
     <property name="libs.javaee-web-api-7.0.maven-pom" value="" />
     <property name="libs.restlib.src" value="" />
     <property name="javac.source" value="1.7" />
@@ -318,8 +317,8 @@
     <property name="build.test.classes.dir" value="build/test/classes" />
     <property name="src.dir" value="src" />
     <property name="sun.awt.keepWorkingSetOnMinimize" value="true" />
-    <property name="annotation.processing.enabled" value="true" />
     <property name="libs.jpa2-persistence.src" value="" />
+    <property name="annotation.processing.enabled" value="true" />
     <property name="libs.jsf20.src" value="" />
     <property name="libs.jpa20-persistence.src" value="" />
     <property name="libs.DataBindingME-SVG.maven-pom" value="" />
@@ -331,15 +330,15 @@
     <property name="dist.dir" value="dist" />
     <property name="libs.groovy-all.javadoc" value="" />
     <property name="testng.debug.mode" value="" />
-    <property name="javac.fork" value="false" />
     <property name="libs.groovy-all.classpath" value="C:\Program Files\NetBeans 8.2\groovy\modules\ext\groovy-all.jar" />
+    <property name="javac.fork" value="false" />
     <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob" />
     <property name="default.javac.source" value="1.8" />
     <property name="debug-transport-by-os" value="dt_shmem" />
     <property name="sun.jnu.encoding" value="Cp1252" />
     <property name="libs.MySQLDriver.src" value="" />
-    <property name="build.test.results.dir" value="build/test/results" />
     <property name="java.runtime.version" value="1.8.0_151-b12" />
+    <property name="build.test.results.dir" value="build/test/results" />
     <property name="ant.file.TreeStock" value="C:\Users\laerc\OneDrive\Documentos\ECOMP (UEFS)\2º Semestre\PBL - Programação\3º Problema\TreeStock\build.xml" />
     <property name="default.javac.target" value="1.8" />
     <property name="libs.junit_4.classpath" value="C:\Program Files\NetBeans 8.2\platform\modules\ext\junit-4.12.jar" />
@@ -355,8 +354,8 @@
     <property name="endorsed.classpath" value="" />
     <property name="libs.absolutelayout.classpath" value="C:\Program Files\NetBeans 8.2\java\modules\ext\AbsoluteLayout.jar" />
     <property name="excludes" value="" />
-    <property name="libs.restlib.maven-pom" value="" />
     <property name="libs.metro.classpath" value="C:\Program Files\NetBeans 8.2\ide\modules\ext\jaxb\activation.jar;C:\Program Files\NetBeans 8.2\enterprise\modules\ext\metro\webservices-api.jar;C:\Program Files\NetBeans 8.2\enterprise\modules\ext\metro\webservices-extra-api.jar;C:\Program Files\NetBeans 8.2\enterprise\modules\ext\metro\webservices-extra.jar;C:\Program Files\NetBeans 8.2\enterprise\modules\ext\metro\webservices-rt.jar;C:\Program Files\NetBeans 8.2\enterprise\modules\ext\metro\webservices-tools.jar" />
+    <property name="libs.restlib.maven-pom" value="" />
     <property name="libs.jpa2-persistence.javadoc" value="C:\Program Files\NetBeans 8.2\java\modules\ext\docs\javax.persistence-2.1.0-doc.zip" />
     <property name="libs.DataBindingME.javadoc" value="C:\Program Files\NetBeans 8.2\mobility\modules\docs\netbeans_databindingme-api.zip" />
     <property name="apple.laf.useScreenMenuBar" value="true" />
@@ -414,7 +413,7 @@
   <testcase classname="br.uefs.ecomp.treeStock.util.ArvoreTest" name="testBuscar" time="0.0" />
   <testcase classname="br.uefs.ecomp.treeStock.util.ArvoreTest" name="testInserir" time="0.0" />
   <testcase classname="br.uefs.ecomp.treeStock.util.ArvoreTest" name="testIterator" time="0.0" />
-  <testcase classname="br.uefs.ecomp.treeStock.util.ArvoreTest" name="testBuscarDadoNaoInserido" time="0.015" />
+  <testcase classname="br.uefs.ecomp.treeStock.util.ArvoreTest" name="testBuscarDadoNaoInserido" time="0.0" />
   <testcase classname="br.uefs.ecomp.treeStock.util.ArvoreTest" name="testInserirDuplicado" time="0.0" />
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>

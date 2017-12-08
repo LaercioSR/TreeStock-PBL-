@@ -27,9 +27,8 @@ public interface IArvore extends Iterable{
     /**
      * Remove um item da árvore usando um item parecido para achá-lo
      * @param item Item parecidao para acha e remover o item desejado
-     * @return Item removido
      * @throws DadoNaoEncontradoException Se não achar item a ser removido
      */
-    public Comparable remover(Comparable item) throws DadoNaoEncontradoException;
+    public void remover(Comparable item) throws DadoNaoEncontradoException;
 
 }

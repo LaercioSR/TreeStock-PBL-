@@ -24,6 +24,8 @@ import java.util.Scanner;
  */
 public class TreeStockView {
     
+    static TreeStockFacade facade;
+    
     /**
      * Método responsável por exibir o menu principal na tela
      */
@@ -50,9 +52,8 @@ public class TreeStockView {
     /**
      * Método exibe o menu de clientes, sendo encarregado por chamar os métodos
      * referente a escolha do usuário
-     * @param facade Façade do programa
      */
-    public static void menuClientes(TreeStockFacade facade){
+    public static void menuClientes(){
         int opcao;
         Scanner in = new Scanner(System.in);
         
@@ -67,13 +68,13 @@ public class TreeStockView {
             
             switch(opcao){
                 case 1:
-                    cadastrarCliente(facade);
+                    cadastrarCliente();
                     break;
                 case 2:
-                    removerCliente(facade);
+                    removerCliente();
                     break;
                 case 3:
-                    buscarCliente(facade);
+                    buscarCliente();
                     break;
                 case 4:
                     break;
@@ -88,9 +89,8 @@ public class TreeStockView {
      * Método responsável por receber do usuário os dados de cadastro de um 
      * novo cliente, além de chamar o método referente ao cadastro de cliente do
      * façade
-     * @param facade Façade do programa
      */
-    public static void cadastrarCliente(TreeStockFacade facade){
+    public static void cadastrarCliente(){
         String nome;
         String endereco;
         String cpf;
@@ -117,9 +117,8 @@ public class TreeStockView {
      * Método responsável por receber do usuário o CPF cliente que deverá ser
      * excluido do sistema, além de chamar o método referente à remoção de cliente 
      * do façade
-     * @param facade Façade do programa
      */
-    public static void removerCliente(TreeStockFacade facade){
+    public static void removerCliente(){
         String cpf;
         Scanner in = new Scanner(System.in);
         
@@ -139,9 +138,8 @@ public class TreeStockView {
      * Método responsável por receber do usuário o CPF cliente que deverá ser
      * buscado no sistema, além de chamar o método referente à busca de cliente 
      * do façade
-     * @param facade Façade do programa
      */
-    public static void buscarCliente(TreeStockFacade facade){
+    public static void buscarCliente(){
         String cpf;
         Scanner in = new Scanner(System.in);
         
@@ -160,9 +158,8 @@ public class TreeStockView {
     /**
      * Método exibe o menu de carteiras, sendo encarregado por chamar os métodos
      * referente a escolha do usuário
-     * @param facade Façade do programa
      */
-    public static void menuCarteiras(TreeStockFacade facade){
+    public static void menuCarteiras(){
         int opcao;
         Scanner in = new Scanner(System.in);
         
@@ -177,13 +174,13 @@ public class TreeStockView {
             
             switch(opcao){
                 case 1:
-                    inserirAcoesCarteira(facade);
+                    inserirAcoesCarteira();
                     break;
                 case 2:
-                    alterarAcoesCarteira(facade);
+                    alterarAcoesCarteira();
                     break;
                 case 3:
-                    removerAcoesCarteira(facade);
+                    removerAcoesCarteira();
                     break;
                 case 4:
                     break;
@@ -198,9 +195,8 @@ public class TreeStockView {
      * Método responsável por receber do usuário os dados para inserção de Lotes (100 ações) 
      * na carteira de um cliente, além de chamar o método referente à inserção de ações na 
      * carteira de um cliente do façade
-     * @param facade Façade do programa
      */
-    public static void inserirAcoesCarteira(TreeStockFacade facade){
+    public static void inserirAcoesCarteira(){
         String cpf;
         String siglaAcao;
         int quantidade;
@@ -226,9 +222,8 @@ public class TreeStockView {
      * Método responsável por receber do usuário os dados para alteração de Lotes (100 ações) 
      * na carteira de um cliente, além de chamar o método referente à alteração de ações na 
      * carteira de um cliente do façade
-     * @param facade Façade do programa
      */
-    public static void alterarAcoesCarteira(TreeStockFacade facade){
+    public static void alterarAcoesCarteira(){
         String cpf;
         String siglaAcao;
         int novaQuantidade;
@@ -254,9 +249,8 @@ public class TreeStockView {
      * Método responsável por receber do usuário os dados para remoção de Lotes (100 ações) 
      * na carteira de um cliente, além de chamar o método referente à remmoção de ações na 
      * carteira de um cliente do façade
-     * @param facade Façade do programa
      */
-    public static void removerAcoesCarteira(TreeStockFacade facade){
+    public static void removerAcoesCarteira(){
         String cpf;
         String siglaAcao;
         Scanner in = new Scanner(System.in);
@@ -278,9 +272,8 @@ public class TreeStockView {
     /**
      * Método exibe o menu de ações, sendo encarregado por chamar os métodos
      * referente a escolha do usuário
-     * @param facade Façade do programa
      */
-    public static void menuAcoes(TreeStockFacade facade){
+    public static void menuAcoes(){
         int opcao;
         Scanner in = new Scanner(System.in);
         
@@ -295,13 +288,13 @@ public class TreeStockView {
             
             switch(opcao){
                 case 1:
-                    cadastrarAcao(facade);
+                    cadastrarAcao();
                     break;
                 case 2:
-                    removerAcao(facade);
+                    removerAcao();
                     break;
                 case 3:
-                    carregarCotacao(facade);
+                    carregarCotacao();
                     break;
                 case 4:
                     break;
@@ -315,9 +308,8 @@ public class TreeStockView {
     /**
      * Método responsável por receber do usuário os dados para o cadastro de uma ação
      * no sistema, além de chamar o método refente ao cadastro de ações do façade
-     * @param facade Façade do programa
      */
-    public static void cadastrarAcao(TreeStockFacade facade){
+    public static void cadastrarAcao(){
         String sigla;
         String nome;
         double valorInicial;
@@ -325,7 +317,7 @@ public class TreeStockView {
         Scanner in = new Scanner(System.in);
         
         System.out.println("\n\n  Cadastrar Acao");
-        System.out.print("   Digite a sigla da empresa: ");
+        System.out.print("   Digite a sigla da ação: ");
         sigla = in.next();
         System.out.print("   Digite o nome da empresa: ");
         in.nextLine();    //esvaziar buffer do teclado
@@ -353,9 +345,8 @@ public class TreeStockView {
     /**
      * Método responsável por receber do usuário a sigla de uma ação para remover
      * do sistema, além de chamar o método refente à remoção de ações do façade
-     * @param facade Façade do programa
      */
-    public static void removerAcao(TreeStockFacade facade){
+    public static void removerAcao(){
         String sigla;
         Scanner in = new Scanner(System.in);
         
@@ -379,9 +370,8 @@ public class TreeStockView {
      * Método responsável por receber do usuário o nome (e/ou dirétorio) do arquivo com
      * as cotações das ações, além de chamar o método refente ao carregamento de cotações
      * do façade
-     * @param facade Façade do programa
      */
-    public static void carregarCotacao(TreeStockFacade facade){
+    public static void carregarCotacao(){
         String nomeArq;
         Scanner in = new Scanner(System.in);
         
@@ -400,9 +390,8 @@ public class TreeStockView {
     /**
      * Método exibe o menu de listagem e exição, sendo encarregado por chamar 
      * os métodos referente a escolha do usuário
-     * @param facade Façade do programa
      */
-    public static void menuListar(TreeStockFacade facade){
+    public static void menuListar(){
         int opcao;
         Scanner in = new Scanner(System.in);
         
@@ -417,13 +406,13 @@ public class TreeStockView {
             
             switch(opcao){
                 case 1:
-                    listarTopK(facade);
+                    listarTopK();
                     break;
                 case 2:
-                    listarClientes(facade);
+                    listarClientes();
                     break;
                 case 3:
-                    listarCarteira(facade);
+                    listarCarteira();
                     break;
                 case 4:
                     break;
@@ -438,9 +427,8 @@ public class TreeStockView {
     /**
      * Método responsável por receber do usuário o número de clientes para o TOP-K
      * (k maiores carteiras)
-     * @param facade Façade do programa
      */
-    public static void listarTopK(TreeStockFacade facade){
+    public static void listarTopK(){
         int k;
         Scanner in = new Scanner(System.in);
         
@@ -467,9 +455,8 @@ public class TreeStockView {
     /**
      * Método responsável por exibir em ordem crescente de CPF todos os clientes
      * cadastrados no sistema
-     * @param facade Façade do programa
      */
-    public static void listarClientes(TreeStockFacade facade){
+    public static void listarClientes(){
         Iterator it = facade.iterator();
         
         System.out.println("\n\n  Listar Clientes\n");
@@ -483,9 +470,8 @@ public class TreeStockView {
     /**
      * Método responsável por receber do usuário o CPF do cliente que deseja ver
      * os dados da carteira
-     * @param facade Façade do programa
      */
-    public static void listarCarteira(TreeStockFacade facade){
+    public static void listarCarteira(){
         Iterator it;
         Carteira carteira;
         String cpfCliente;
@@ -513,9 +499,8 @@ public class TreeStockView {
     /**
      * Método chama o método do façade referente à gerar arquivo do sistema e
      * exibe se o processo deu certo ou não
-     * @param facade Façade do programa
      */
-    public static void gerarArquivoSistema(TreeStockFacade facade){
+    public static void gerarArquivoSistema(){
         System.out.println("\n\n  Salvar Arquivo do Sistema");
         
         try {
@@ -530,9 +515,8 @@ public class TreeStockView {
      * Método chama métodos do façade para buscar se existe arquivo de salvamento
      * so sitema, a data e o horário do salvamento desse possivél arquivo e pergunta
      * ao usuário se ele deseja carregar o sistema salvo, caso exista
-     * @param facade Façade do programa
      */
-    public static void carregarArquivoSistema(TreeStockFacade facade) {
+    public static void carregarArquivoSistema() {
         Scanner in = new Scanner(System.in);
         int opcao;
         
@@ -574,10 +558,10 @@ public class TreeStockView {
      */
     public static void main(String[] args){
         int opcaoMenu;
-        TreeStockFacade facade = new TreeStockFacade();
+        facade = new TreeStockFacade();
         Scanner in = new Scanner(System.in);
         
-        carregarArquivoSistema(facade);
+        carregarArquivoSistema();
         
         do{
             menu();
@@ -587,23 +571,23 @@ public class TreeStockView {
             switch(opcaoMenu){
                 case 1:
                     System.out.println(" MENU de CLIENTES:");
-                    menuClientes(facade);
+                    menuClientes();
                     break;
                 case 2:
                     System.out.println(" MENU de CARTEIRAS:");
-                    menuCarteiras(facade);
+                    menuCarteiras();
                     break;
                 case 3:
                     System.out.println(" MENU de AÇÕES:");
-                    menuAcoes(facade);
+                    menuAcoes();
                     break;
                 case 4:
                     System.out.println(" MENU de EXIBIÇÃO:");
-                    menuListar(facade);
+                    menuListar();
                     break;
                 case 5:
                     System.out.println(" SALVAR DADOS do SISTEMA:");
-                    gerarArquivoSistema(facade);
+                    gerarArquivoSistema();
                     break;
                 case 6:
                     break;

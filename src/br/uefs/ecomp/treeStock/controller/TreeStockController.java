@@ -77,7 +77,7 @@ public class TreeStockController implements Serializable {
      * @param cpf CPF do cliente
      * @param endereco Endereço do cliente
      * @return Cliente cadastrado 
-     * @throws DadoDuplicadoException Se já exista um cliente cadastrado com o CPF fornecido
+     * @throws DadoDuplicadoException Se já existe um cliente cadastrado com o CPF fornecido
      */
     public Cliente cadastrarCliente(String nome, String cpf, String endereco) throws DadoDuplicadoException {
         Cliente cliente = new Cliente(nome, cpf, endereco);
@@ -98,10 +98,10 @@ public class TreeStockController implements Serializable {
      */
     public Cliente removerCliente(String cpf) throws DadoNaoEncontradoException {
         Cliente clienteComp = new Cliente(null, cpf, null);     //instancia um cliente para que possa ser comparado na busca do cliente a ser removido
-        Cliente cliente;
+        Cliente cliente = (Cliente) clientes.buscar(clienteComp);
         Carteira carteira;
         
-        cliente = (Cliente) clientes.remover(clienteComp);
+        clientes.remover(clienteComp);
         carteira = cliente.getCarteira();
         contas.remove(carteira);
         
@@ -166,7 +166,8 @@ public class TreeStockController implements Serializable {
     }
 
     /**
-     * Método remove do sistema a ação com a sigla passada
+     * Método remove do sistema a ação com a sigla passada, que não pertence a 
+     * nenhuma carteira
      * @param sigla Sigla da ação
      * @return Ação removida
      * @throws DadoNaoEncontradoException Se não foi encontrada uma ação com a sigla fornecida
@@ -190,6 +191,7 @@ public class TreeStockController implements Serializable {
         
         acoes.remove(acao);
         
+        //busca a ação nas carteiras
         while(itContas.hasNext()){
             Carteira carteira = (Carteira) itContas.next();
             Iterator itLotes = carteira.iteratorLotes();
