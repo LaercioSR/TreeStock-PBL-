@@ -1,5 +1,5 @@
 /**
- * Pacaote contÈm a classe {@link br.uefs.ecomp.treeStock.view.TreeStockView 
- * TreeStockView} que faz a intereÁ„o com o usu·rio
+ * Pacote cont√©m a classe {@link br.uefs.ecomp.treeStock.view.TreeStockView 
+ * TreeStockView} que faz a intere√ß√£o com o usu√°rio
  */
 package br.uefs.ecomp.treeStock.view;
