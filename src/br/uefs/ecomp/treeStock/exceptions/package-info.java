@@ -1,4 +1,4 @@
 /**
- * Pacaote contém as excessões usadas (lançadas) na executção do sistema
+ * Pacote contÃ©m as excessÃµes usadas (lanÃ§adas) na executÃ§Ã£o do sistema
  */
 package br.uefs.ecomp.treeStock.exceptions;
